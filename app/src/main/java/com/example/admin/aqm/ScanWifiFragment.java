@@ -35,8 +35,10 @@ public class ScanWifiFragment extends Fragment {
 
     @OnClick(R.id.scan_aqm_wifi_button)
     public void showAvailableWifiNetworks() {
+        ((HomeActivity)getActivity()).openAvailableWifiNetworkFragment();
+/*
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment()).commit();
-
+*/
     }
 }

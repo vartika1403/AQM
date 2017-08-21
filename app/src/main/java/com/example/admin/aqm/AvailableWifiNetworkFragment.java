@@ -109,10 +109,11 @@ public class AvailableWifiNetworkFragment extends Fragment {
                 wifiItemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String wifiSSidName = wifiSSIdList.get(position);
-                        AQMConnectionFragment aqmConnectionFragment = AQMConnectionFragment.newInstance(wifiSSidName);
+                        String wifiSSIDName = wifiSSIdList.get(position);
+                        ((HomeActivity)getActivity()).openAQMConnectionFragment(wifiSSIDName);
+                        /*AQMConnectionFragment aqmConnectionFragment = AQMConnectionFragment.newInstance(wifiSSidName);
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame_container, aqmConnectionFragment).commit();
+                        fragmentTransaction.replace(R.id.frame_container, aqmConnectionFragment).commit();*/
                     }
                 });
             }
