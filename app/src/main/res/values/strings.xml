@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AQM</string>
+    <string name="title_activity_available_network">AvailableNetworkActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="available_networks">available  networks</string>
+    <string name="wifi_error_message">wifi is disabled..making it enabled</string>
+    <string name="scan_for_aqm_wifi">Scan for AQM Wifi</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_home">HomeActivity</string>
+</resources>
