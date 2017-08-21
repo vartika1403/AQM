@@ -15,6 +15,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +38,10 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class AQMConnectionFragment extends Fragment {
     private static final String LOG_TAG = AQMConnectionFragment.class.getSimpleName();
+    private static final int SERVER_PORT = 5000;
     private String wifiSSidName;
+    private Socket socket;
+    private String ipAddressServer;
 
     @BindView(R.id.aqm_wifi_ssid_name)
     TextView aqmWifiSSidName;
@@ -34,6 +49,10 @@ public class AQMConnectionFragment extends Fragment {
     EditText passwordText;
     @BindView(R.id.connect_button)
     Button connectButton;
+    @BindView(R.id.send_input_text)
+    EditText sendInputText;
+    @BindView(R.id.send_button)
+    Button sendButtton;
 
     public static AQMConnectionFragment newInstance(String param) {
         Bundle bundle = new Bundle();
@@ -117,12 +136,40 @@ public class AQMConnectionFragment extends Fragment {
                         state = wm.enableNetwork(wifiConfig.networkId, true);
                     Log.i(LOG_TAG, "state, " + state);
                         Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
+                        ipAddressServer = getIpAddressForServer();
+                        Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
+
                 } else
                         wm.disableNetwork(wifiConfig.networkId);
                 }
                 wm.reconnect();
             }
-     //   }
+
+    private String getIpAddressForServer() {
+        try {
+            //Loop through all the network interface devices
+            for (Enumeration<NetworkInterface> enumeration = NetworkInterface
+                    .getNetworkInterfaces(); enumeration.hasMoreElements();) {
+                NetworkInterface networkInterface = enumeration.nextElement();
+                //Loop through all the ip addresses of the network interface devices
+                for (Enumeration<InetAddress> enumerationIpAddr = networkInterface.getInetAddresses();
+                     enumerationIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumerationIpAddr.nextElement();
+                    //Filter out loopback address and other irrelevant ip addresses
+                    Log.i(LOG_TAG, "inet Address, " + inetAddress);
+                    if (!inetAddress.isLoopbackAddress() && inetAddress.getAddress().length == 4) {
+                        //Print the device ip address in to the text view
+                      //  tvServerIP.setText(inetAddress.getHostAddress());
+                        return  inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            Log.e("ERROR:", e.toString());
+        }
+        return " ";
+    }
+    //   }
   //  }
 
     private void connectToWifi(String networkSSID, String networkPass) {
@@ -143,5 +190,39 @@ public class AQMConnectionFragment extends Fragment {
         boolean x = wifiManager.enableNetwork(netId, true);
         Log.i(LOG_TAG, "x, " + x);
         wifiManager.reconnect();
+    }
+
+    @OnClick(R.id.send_button)
+    public void sendDataToServer() {
+        if (!sendInputText.getText().toString().isEmpty()) {
+            new Thread(new ClientThread()).start();
+            String data = sendInputText.getText().toString();
+        //    Socket socket = null;
+            if (socket != null) {
+                try {
+                    Log.i(LOG_TAG, "socket , " + socket);
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new
+                            OutputStreamWriter(socket.getOutputStream())));
+                    out.println(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class ClientThread implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                InetAddress serverAddress = InetAddress.getByName(ipAddressServer);
+                socket = new Socket(serverAddress, SERVER_PORT);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

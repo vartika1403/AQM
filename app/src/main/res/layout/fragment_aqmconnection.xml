@@ -34,4 +34,23 @@
         android:background="@drawable/scan_aqm_wifi_button_background"
         android:layout_height="wrap_content" />
 
+    <EditText
+        android:id="@+id/send_input_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:hint="SEND DATA"
+        android:layout_width="200dp"
+        android:gravity="center"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="SEND DATA"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/scan_aqm_wifi_button_background"/>
+
 </LinearLayout>
