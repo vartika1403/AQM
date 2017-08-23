@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -39,10 +36,6 @@ import static android.content.Context.WIFI_SERVICE;
 public class AQMConnectionFragment extends Fragment {
     private static final String LOG_TAG = AQMConnectionFragment.class.getSimpleName();
     private static final int SERVER_PORT = 5000;
-    private String wifiSSidName;
-    private Socket socket;
-    private String ipAddressServer;
-
     @BindView(R.id.aqm_wifi_ssid_name)
     TextView aqmWifiSSidName;
     @BindView(R.id.password_text_box)
@@ -53,6 +46,9 @@ public class AQMConnectionFragment extends Fragment {
     EditText sendInputText;
     @BindView(R.id.send_button)
     Button sendButtton;
+    private String wifiSSidName;
+    private Socket socket;
+    private String ipAddressServer;
 
     public static AQMConnectionFragment newInstance(String param) {
         Bundle bundle = new Bundle();
@@ -89,7 +85,7 @@ public class AQMConnectionFragment extends Fragment {
             String networkSSID = aqmWifiSSidName.getText().toString();
             Log.i(LOG_TAG, "network ssis string, " + networkSSID);
 
-           // connectToWifi(networkSSID, networkPass);
+            // connectToWifi(networkSSID, networkPass);
             connnectToWifiOnLollipop(networkSSID, networkPass);
 
          /*   WifiConfiguration wifiConfiguration = new WifiConfiguration();
@@ -121,46 +117,56 @@ public class AQMConnectionFragment extends Fragment {
         Log.i(LOG_TAG, "networkssid, " + networkSSID);
         boolean state = false;
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {*/
-            WifiManager wm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
-           /* if (wm.setWifiEnabled(true)) {*/
-                List<WifiConfiguration> networks = wm.getConfiguredNetworks();
-               Log.i(LOG_TAG, "all networks, " + networks);
-                Iterator<WifiConfiguration> iterator = networks.iterator();
-                Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
-                while (iterator.hasNext()) {
-                    WifiConfiguration wifiConfig = iterator.next();
-                    Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfig.SSID);
-                    Log.i(LOG_TAG, "networkSSID, " +  "\""+networkSSID+"\"");
-                    String netSSID = "\""+networkSSID+"\"";
-                    if (wifiConfig.SSID.equals(netSSID)){
-                        state = wm.enableNetwork(wifiConfig.networkId, true);
-                    Log.i(LOG_TAG, "state, " + state);
-                        Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
-                     //   ipAddressServer = getIpAddressForServer();
-                       // Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
+        WifiManager wm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+        if (!wm.isWifiEnabled()) {
+            // If wifi disabled then enable it
+            Toast.makeText(getActivity(), R.string.wifi_error_message,
+                    Toast.LENGTH_LONG).show();
 
-                } else
-                        wm.disableNetwork(wifiConfig.networkId);
-                }
-                wm.reconnect();
-            }
+            wm.setWifiEnabled(true);
+        }
+        List<WifiConfiguration> networks = wm.getConfiguredNetworks();
+        Log.i(LOG_TAG, "all networks, " + networks);
+        if (networks == null) {
+          //  wm.setWifiEnabled(true);
+            return;
+        }
+        Iterator<WifiConfiguration> iterator = networks.iterator();
+        Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
+        while (iterator.hasNext()) {
+            WifiConfiguration wifiConfig = iterator.next();
+            Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfig.SSID);
+            Log.i(LOG_TAG, "networkSSID, " + "\"" + networkSSID + "\"");
+            String netSSID = "\"" + networkSSID + "\"";
+            if (wifiConfig.SSID.equals(netSSID)) {
+                state = wm.enableNetwork(wifiConfig.networkId, true);
+                Log.i(LOG_TAG, "state, " + state);
+                Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
+                ipAddressServer = getIpAddressForServer();
+                Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
+
+            } else
+                wm.disableNetwork(wifiConfig.networkId);
+        }
+        wm.reconnect();
+    }
 
     private String getIpAddressForServer() {
         try {
             //Loop through all the network interface devices
             for (Enumeration<NetworkInterface> enumeration = NetworkInterface
-                    .getNetworkInterfaces(); enumeration.hasMoreElements();) {
+                    .getNetworkInterfaces(); enumeration.hasMoreElements(); ) {
                 NetworkInterface networkInterface = enumeration.nextElement();
                 //Loop through all the ip addresses of the network interface devices
                 for (Enumeration<InetAddress> enumerationIpAddr = networkInterface.getInetAddresses();
-                     enumerationIpAddr.hasMoreElements();) {
+                     enumerationIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumerationIpAddr.nextElement();
                     //Filter out loopback address and other irrelevant ip addresses
                     Log.i(LOG_TAG, "inet Address, " + inetAddress);
                     if (!inetAddress.isLoopbackAddress() && inetAddress.getAddress().length == 4) {
                         //Print the device ip address in to the text view
-                      //  tvServerIP.setText(inetAddress.getHostAddress());
-                        return  inetAddress.getHostAddress();
+                        //  tvServerIP.setText(inetAddress.getHostAddress());
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
@@ -170,7 +176,7 @@ public class AQMConnectionFragment extends Fragment {
         return " ";
     }
     //   }
-  //  }
+    //  }
 
     private void connectToWifi(String networkSSID, String networkPass) {
         WifiConfiguration wifiConfig = new WifiConfiguration();
@@ -181,7 +187,7 @@ public class AQMConnectionFragment extends Fragment {
         WifiManager wifiManager = (WifiManager) getActivity().getSystemService(WIFI_SERVICE);
         int networkId = wifiManager.getConnectionInfo().getNetworkId();
         Log.i(LOG_TAG, "networkId," + networkId);
-         wifiManager.removeNetwork(networkId);
+        wifiManager.removeNetwork(networkId);
         wifiManager.saveConfiguration();
         //remember id
         int netId = wifiManager.addNetwork(wifiConfig);
@@ -197,7 +203,7 @@ public class AQMConnectionFragment extends Fragment {
         if (!sendInputText.getText().toString().isEmpty()) {
             new Thread(new ClientThread()).start();
             String data = sendInputText.getText().toString();
-        //    Socket socket = null;
+            //    Socket socket = null;
             if (socket != null) {
                 try {
                     Log.i(LOG_TAG, "socket , " + socket);
