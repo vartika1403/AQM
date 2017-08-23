@@ -136,8 +136,8 @@ public class AQMConnectionFragment extends Fragment {
                         state = wm.enableNetwork(wifiConfig.networkId, true);
                     Log.i(LOG_TAG, "state, " + state);
                         Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
-                        ipAddressServer = getIpAddressForServer();
-                        Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
+                     //   ipAddressServer = getIpAddressForServer();
+                       // Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
 
                 } else
                         wm.disableNetwork(wifiConfig.networkId);
