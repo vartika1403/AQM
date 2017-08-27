@@ -144,7 +144,7 @@ public class AQMConnectionFragment extends Fragment {
         Log.i(LOG_TAG, "networkssid, " + networkSSID);
         boolean state = false;
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {*/
-        WifiManager wm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wm = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (!wm.isWifiEnabled()) {
             // If wifi disabled then enable it
             Toast.makeText(getActivity(), R.string.wifi_error_message,
