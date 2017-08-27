@@ -58,7 +58,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getWifiResults() {
         wifiManager = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager.isWifiEnabled() == false) {
+        if (!wifiManager.isWifiEnabled()) {
             // If wifi disabled then enable it
             Toast.makeText(getActivity(), R.string.wifi_error_message,
                     Toast.LENGTH_LONG).show();
@@ -93,18 +93,19 @@ public class AvailableWifiNetworkFragment extends Fragment {
                 scanWifiText.setText(R.string.available_networks);
                 // add your logic here
                 StringBuilder sb = new StringBuilder();
-                sb.append("\n        Number Of Wifi connections :"+scanResults.size()+"\n\n");
+                sb.append("\n  Number Of Wifi connections :" + scanResults.size() + "\n\n");
 
                 final List<String> wifiSSIdList = new ArrayList<String>();
                 for(int i = 0; i < scanResults.size(); i++){
-
                     sb.append(new Integer(i+1).toString() + ". ");
                     Log.i(LOG_TAG, "scan result get i," + scanResults.get(i).toString());
                     sb.append((scanResults.get(i)).toString());
                     sb.append("\n\n");
                     wifiSSIdList.add(scanResults.get(i).SSID);
                 }
-                ArrayAdapter listAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item, R.id.wifi_name_text, wifiSSIdList);
+
+                ArrayAdapter listAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item,
+                        R.id.wifi_name_text, wifiSSIdList);
                 wifiItemsList.setAdapter(listAdapter);
                 wifiItemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

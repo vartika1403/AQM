@@ -85,7 +85,34 @@ public class AQMConnectionFragment extends Fragment {
             String networkSSID = aqmWifiSSidName.getText().toString();
             Log.i(LOG_TAG, "network ssis string, " + networkSSID);
 
-            // connectToWifi(networkSSID, networkPass);
+            WifiManager wm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+            List<WifiConfiguration> networks = wm.getConfiguredNetworks();
+            Log.i(LOG_TAG, "all networks, " + networks);
+            if (networks == null) {
+                //git remote set-url origin git@github.com:vartika1403/VehicleTracking.git  wm.setWifiEnabled(true);
+                return;
+            }
+            Iterator<WifiConfiguration> iterator = networks.iterator();
+            Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
+            while (iterator.hasNext()) {
+                WifiConfiguration wifiConfig = iterator.next();
+                Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfig.SSID);
+                Log.i(LOG_TAG, "networkSSID, " + "\"" + networkSSID + "\"");
+                String netSSID = "\"" + networkSSID + "\"";
+                if (wifiConfig.SSID.equals(netSSID)) {
+                     connnectToWifiOnLollipop(networkSSID, networkPass);
+                    /*state = wm.enableNetwork(wifiConfig.networkId, true);
+                    Log.i(LOG_TAG, "state, " + state);
+                    Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
+                    ipAddressServer = getIpAddressForServer();
+                    Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
+*/
+                } else
+                    connectToWifi(networkSSID, networkPass);
+                    wm.disableNetwork(wifiConfig.networkId);
+            }
+            wm.reconnect();
+             connectToWifi(networkSSID, networkPass);
             connnectToWifiOnLollipop(networkSSID, networkPass);
 
          /*   WifiConfiguration wifiConfiguration = new WifiConfiguration();
@@ -128,7 +155,7 @@ public class AQMConnectionFragment extends Fragment {
         List<WifiConfiguration> networks = wm.getConfiguredNetworks();
         Log.i(LOG_TAG, "all networks, " + networks);
         if (networks == null) {
-          //  wm.setWifiEnabled(true);
+          //git remote set-url origin git@github.com:vartika1403/VehicleTracking.git  wm.setWifiEnabled(true);
             return;
         }
         Iterator<WifiConfiguration> iterator = networks.iterator();
