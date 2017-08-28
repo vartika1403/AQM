@@ -7,11 +7,16 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ConnectToRouterFragment extends Fragment {
     private static final String LOG_TAG = ConnectToRouterFragment.class.getSimpleName();
+
+    @BindView(R.id.successfully_connected_text)
+    TextView successfullyConnectedText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,4 +32,9 @@ public class ConnectToRouterFragment extends Fragment {
         ButterKnife.bind(this, view);
         return view;
     }
+
+   /* @Override
+    public void onBackPressed() {
+      //  super.onB
+    }*/
 }

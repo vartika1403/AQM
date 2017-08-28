@@ -3,7 +3,10 @@ package com.example.admin.aqm;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiEnterpriseConfig;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,9 +53,9 @@ public class AQMConnectionFragment extends Fragment {
     private Socket socket;
     private String ipAddressServer;
 
-    public static AQMConnectionFragment newInstance(String param) {
+    public static AQMConnectionFragment newInstance(WifiInfo param) {
         Bundle bundle = new Bundle();
-        bundle.putString("wifiName", param);
+        bundle.putString("wifiName", param.getSSID());
         AQMConnectionFragment fragment = new AQMConnectionFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -85,8 +88,8 @@ public class AQMConnectionFragment extends Fragment {
             String networkSSID = aqmWifiSSidName.getText().toString();
             Log.i(LOG_TAG, "network ssis string, " + networkSSID);
 
-            // connectToWifi(networkSSID, networkPass);
-            connnectToWifiOnLollipop(networkSSID, networkPass);
+             connectToWifi(networkSSID, networkPass);
+            //connnectToWifiOnLollipop(networkSSID, networkPass);
 
          /*   WifiConfiguration wifiConfiguration = new WifiConfiguration();
             wifiConfiguration.SSID = "\"" + networkSSID + "\"";
@@ -128,15 +131,49 @@ public class AQMConnectionFragment extends Fragment {
         List<WifiConfiguration> networks = wm.getConfiguredNetworks();
         Log.i(LOG_TAG, "all networks, " + networks);
         if (networks == null) {
-          //  wm.setWifiEnabled(true);
+            //  wm.setWifiEnabled(true);
             return;
         }
-        Iterator<WifiConfiguration> iterator = networks.iterator();
-        Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
+        WifiConfiguration wifiConfiguration = new WifiConfiguration();
+        wifiConfiguration.SSID = String.format("\"%s\"", networkSSID);
+        wifiConfiguration.preSharedKey = String.format("\"%s\"", networkPass);
+        Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfiguration.SSID);
+        Log.i(LOG_TAG, "networkSSID, " + "\"" + networkSSID + "\"");
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            //wifiConfiguration.enterpriseConfig.setIdentity("name");
+            //wifiConfiguration.enterpriseConfig.setPassword("testpassword");
+            wifiConfiguration.enterpriseConfig.setEapMethod(WifiEnterpriseConfig.Eap.PEAP);
+            wifiConfiguration.enterpriseConfig.setPhase2Method(WifiEnterpriseConfig.Phase2.MSCHAPV2);
+        }
+        networks.add(wifiConfiguration);
+
+        /*int netId = wm.addNetwork(wifiConfiguration);
+           Log.i(LOG_TAG, "netID, " + netId);
+        Log.i(LOG_TAG, "wifinetworkID, " + wifiConfiguration.networkId);
+        wm.disconnect();
+        state = wm.enableNetwork(netId, true);
+        Log.i(LOG_TAG, "state, " + state);
+        if (state) {
+            Toast.makeText(getActivity(), "The connection is successful", Toast.LENGTH_SHORT).show();
+        }
+
+        wm.reconnect();*/
+    //}
+       Iterator<WifiConfiguration> iterator = networks.iterator();
+        Log.i(LOG_TAG, "iterator, " + iterator.next());
         while (iterator.hasNext()) {
             WifiConfiguration wifiConfig = iterator.next();
             Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfig.SSID);
             Log.i(LOG_TAG, "networkSSID, " + "\"" + networkSSID + "\"");
+            wifiConfig.hiddenSSID = true;
+            wifiConfig.allowedAuthAlgorithms
+                    .set(WifiConfiguration.AuthAlgorithm.OPEN);
+            wifiConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            wifiConfig.allowedPairwiseCiphers
+                    .set(WifiConfiguration.PairwiseCipher.TKIP);
+            wifiConfig.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+            wifiConfig.status = WifiConfiguration.Status.ENABLED;
             String netSSID = "\"" + networkSSID + "\"";
             if (wifiConfig.SSID.equals(netSSID)) {
                 state = wm.enableNetwork(wifiConfig.networkId, true);
@@ -184,16 +221,16 @@ public class AQMConnectionFragment extends Fragment {
         wifiConfig.SSID = String.format("\"%s\"", networkSSID);
         wifiConfig.preSharedKey = String.format("\"%s\"", networkPass);
         wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-        WifiManager wifiManager = (WifiManager) getActivity().getSystemService(WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
         int networkId = wifiManager.getConnectionInfo().getNetworkId();
         Log.i(LOG_TAG, "networkId," + networkId);
-        wifiManager.removeNetwork(networkId);
+       // wifiManager.removeNetwork(networkId);
         wifiManager.saveConfiguration();
         //remember id
         int netId = wifiManager.addNetwork(wifiConfig);
         Log.i(LOG_TAG, "netId, " + netId);
         wifiManager.disconnect();
-        boolean x = wifiManager.enableNetwork(netId, true);
+        boolean x = wifiManager.enableNetwork(networkId, true);
         Log.i(LOG_TAG, "x, " + x);
         wifiManager.reconnect();
     }

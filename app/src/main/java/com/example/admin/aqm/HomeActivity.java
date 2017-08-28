@@ -2,6 +2,7 @@ package com.example.admin.aqm;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
@@ -110,12 +111,20 @@ public class HomeActivity extends AppCompatActivity
 
     public void openAvailableWifiNetworkFragment() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment()).addToBackStack(null).commit();
+        fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment())
+                .addToBackStack(null).commit();
     }
 
-    public void openAQMConnectionFragment(String wifiSSIDName) {
-        AQMConnectionFragment aqmConnectionFragment = AQMConnectionFragment.newInstance(wifiSSIDName);
+    public void openAQMConnectionFragment(WifiInfo wifiInfo) {
+        AQMConnectionFragment aqmConnectionFragment = AQMConnectionFragment.newInstance(wifiInfo);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container, aqmConnectionFragment).addToBackStack(null).commit();
+        fragmentTransaction.replace(R.id.frame_container, aqmConnectionFragment)
+                .addToBackStack(null).commit();
+    }
+
+    public void openConnectToRouterFragment() {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container, new ConnectToRouterFragment())
+                .addToBackStack(null).commit();
     }
 }

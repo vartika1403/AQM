@@ -6,26 +6,44 @@
 
     <TextView
         android:id="@+id/scan_wifi_text"
-        android:text="scan for wifi..."
-        android:textColor="@color/colorNavyBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="scan for wifi..."
+        android:textColor="@color/colorNavyBlue"
+        android:textSize="30sp" />
 
     <ListView
         android:id="@+id/wifi_list"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/scan_wifi_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_marginTop="10dp"></ListView>
 
-<!--
-    <FrameLayout
-        android:id="@+id/frame_container"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
--->
+        android:layout_height="1dp"
+        android:layout_below="@id/wifi_list"
+        android:layout_marginTop="10dp"
+        android:background="#c0c0c0" />
+
+    <TextView
+        android:id="@+id/next_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:text="NEXT"
+        android:textSize="30sp" />
+
+    <!--
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    -->
 
 </RelativeLayout>
