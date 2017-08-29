@@ -45,7 +45,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/submit_button"
+        android:id="@+id/connect_button"
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"

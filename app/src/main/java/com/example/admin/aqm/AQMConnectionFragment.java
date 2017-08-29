@@ -55,7 +55,7 @@ public class AQMConnectionFragment extends Fragment {
 
     public static AQMConnectionFragment newInstance(String param) {
         Bundle bundle = new Bundle();
-        bundle.putString("wifiName", param.getSSID());
+        bundle.putString("wifiName", param);
         AQMConnectionFragment fragment = new AQMConnectionFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -88,13 +88,10 @@ public class AQMConnectionFragment extends Fragment {
             String networkSSID = aqmWifiSSidName.getText().toString();
             Log.i(LOG_TAG, "network ssis string, " + networkSSID);
 
-             connectToWifi(networkSSID, networkPass);
-            //connnectToWifiOnLollipop(networkSSID, networkPass);
-            WifiManager wm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+            WifiManager wm = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             List<WifiConfiguration> networks = wm.getConfiguredNetworks();
             Log.i(LOG_TAG, "all networks, " + networks);
             if (networks == null) {
-                //git remote set-url origin git@github.com:vartika1403/VehicleTracking.git  wm.setWifiEnabled(true);
                 return;
             }
             Iterator<WifiConfiguration> iterator = networks.iterator();
@@ -106,40 +103,11 @@ public class AQMConnectionFragment extends Fragment {
                 String netSSID = "\"" + networkSSID + "\"";
                 if (wifiConfig.SSID.equals(netSSID)) {
                      connnectToWifiOnLollipop(networkSSID, networkPass);
-                    /*state = wm.enableNetwork(wifiConfig.networkId, true);
-                    Log.i(LOG_TAG, "state, " + state);
-                    Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
-                    ipAddressServer = getIpAddressForServer();
-                    Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
-*/
                 } else
                     connectToWifi(networkSSID, networkPass);
                     wm.disableNetwork(wifiConfig.networkId);
             }
-            wm.reconnect();
-             connectToWifi(networkSSID, networkPass);
-            connnectToWifiOnLollipop(networkSSID, networkPass);
-
-         /*   WifiConfiguration wifiConfiguration = new WifiConfiguration();
-            wifiConfiguration.SSID = "\"" + networkSSID + "\"";
-            wifiConfiguration.preSharedKey = "\""+ networkPass +"\"";
-            Log.i(LOG_TAG, "networkPass, " + wifiConfiguration.preSharedKey);
-          //  wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-            wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-            wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-            wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-            wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-            wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-            wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
-            wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-            wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            WifiManager wifiManager = (WifiManager)getActivity().getSystemService(WIFI_SERVICE);
-            int netId = wifiManager.addNetwork(wifiConfiguration);
-            Log.i(LOG_TAG, "netId, " + netId);
-            wifiManager.disconnect();
-            wifiManager.enableNetwork(netId, true);
-            wifiManager.reconnect();*/
+             wm.reconnect();
         } else {
             Toast.makeText(getActivity(), "Please Enter Password", Toast.LENGTH_SHORT).show();
         }

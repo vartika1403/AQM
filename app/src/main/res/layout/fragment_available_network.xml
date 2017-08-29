@@ -15,16 +15,16 @@
         android:textSize="30sp" />
 
     <ListView
-        android:id="@+id/wifi_list"
+        android:id="@+id/available_aqm_devices_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/scan_wifi_text"
-        android:layout_marginTop="10dp"></ListView>
+        android:layout_marginTop="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/wifi_list"
+        android:layout_below="@id/available_aqm_devices_list"
         android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 

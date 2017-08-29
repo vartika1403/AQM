@@ -1,9 +1,11 @@
 package com.example.admin.aqm;
 
 import android.content.Context;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +32,21 @@ public class ConnectToRouterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_connect_to_router, container, false);
         ButterKnife.bind(this, view);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager
+                .getActiveNetworkInfo();
+
+        Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
+
+        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            //successfullyConnectedText
+            Log.i(LOG_TAG, "connected");
+        } else {
+            Log.i(LOG_TAG, "not connected");
+            successfullyConnectedText.setText("NOT CONNECTED TO WIFI");
+        }
+
         return view;
     }
-
-   /* @Override
-    public void onBackPressed() {
-      //  super.onB
-    }*/
 }

@@ -41,7 +41,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
 
     @BindView(R.id.scan_wifi_text)
     TextView scanWifiText;
-    @BindView(R.id.wifi_list)
+    @BindView(R.id.available_aqm_devices_list)
     ListView wifiItemsList;
     @BindView(R.id.next_button_text)
     TextView nextButtonText;
@@ -73,7 +73,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
 
             wifiManager.setWifiEnabled(true);
         }
-        getActivity().registerReceiver(wifiScanReceiver,
+        getActivity().registerReceiver(aqmScanReceiver,
                 new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
     }
@@ -81,36 +81,36 @@ public class AvailableWifiNetworkFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().registerReceiver(wifiScanReceiver,
+        getActivity().registerReceiver(aqmScanReceiver,
                 new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
     }
 
     @Override
     public void onPause() {
-        getActivity().unregisterReceiver(wifiScanReceiver);
+        getActivity().unregisterReceiver(aqmScanReceiver);
         super.onPause();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @OnClick(R.id.next_button_text)
     public void clickOnNext() {
       Log.i(LOG_TAG, "next is clicked, " + nextButtonText.isClickable());
         if(isNextButtonClickable) {
-           // ((HomeActivity) getActivity()).openConnectToRouterFragment();
-            openWifiSettings();
+            ((HomeActivity)getActivity()).openWifiListFragment();
         }
     }
 
-    private final BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver aqmScanReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
-            if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION ) && !isConnected) {
+            if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION ) && !isNextButtonClickable) {
                 List<ScanResult> scanResults = wifiManager.getScanResults();
                 Log.i(LOG_TAG, "scanResult, " + scanResults);
                 scanWifiText.setText(R.string.available_networks);
                 // add your logic here
                 StringBuilder sb = new StringBuilder();
-                sb.append("\n        Number Of Wifi connections :" + scanResults.size() + "\n\n");
+                sb.append("\n   Number Of Wifi connections :" + scanResults.size() + "\n\n");
 
                 wifiSSIdList = new ArrayList<String>();
                 for (int i = 0; i < scanResults.size(); i++) {
@@ -123,9 +123,14 @@ public class AvailableWifiNetworkFragment extends Fragment {
                 listAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item, R.id.wifi_name_text, wifiSSIdList);
                 wifiItemsList.setAdapter(listAdapter);
                 wifiItemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String wifiSSIDName = wifiSSIdList.get(position);
+                       /* if (isNextButtonClickable) {
+                            getWifiResults();
+                            return;
+                        }*/
                         openWifiSettings();
 
                         //((HomeActivity)getActivity()).openAQMConnectionFragment(wifiSSIDName);
@@ -175,6 +180,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
                 listAdapter.notifyDataSetChanged();
                 nextButtonText.setTextColor(Color.parseColor("#000080"));
                 isNextButtonClickable = true;
+
              //   openAQMConnectionFragment(wifiInfo);
                 //scanWifiText.setText("connected devices");
             }

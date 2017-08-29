@@ -20,7 +20,7 @@ public class ServerActivity extends AppCompatActivity {
     private ServerSocket serverSocket;
     Handler updateConversationHandler;
     Thread serverThread = null;
-    public static final int SERVERPORT = 6000;
+    public static final int SERVERPORT = 5000;
 
     @BindView(R.id.recieve_text)
     TextView receivedText;
@@ -86,7 +86,6 @@ public class ServerActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
