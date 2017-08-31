@@ -97,7 +97,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
     public void clickOnNext() {
       Log.i(LOG_TAG, "next is clicked, " + nextButtonText.isClickable());
         if(isNextButtonClickable) {
-            ((HomeActivity)getActivity()).openWifiListFragment();
+              ((HomeActivity)getActivity()).openWifiListFragment();
         }
     }
 
@@ -163,9 +163,11 @@ public class AvailableWifiNetworkFragment extends Fragment {
                         "something went wrong ", Toast.LENGTH_SHORT).show();
             } else {
                 //write your code for any kind of network calling to fetch data
+
                 if (wifiConnectedList != null && !wifiConnectedList.isEmpty()) {
                     ((HomeActivity)getActivity()).openConnectToRouterFragment();
                 }
+
                 isConnected = true;
                 nextButtonText.setClickable(true);
                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -181,7 +183,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
                 nextButtonText.setTextColor(Color.parseColor("#000080"));
                 isNextButtonClickable = true;
 
-             //   openAQMConnectionFragment(wifiInfo);
+               // openAQMConnectionFragment(wifiInfo);
                 //scanWifiText.setText("connected devices");
             }
         }

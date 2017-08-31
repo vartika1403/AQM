@@ -173,6 +173,7 @@ public class AQMConnectionFragment extends Fragment {
             wifiConfig.status = WifiConfiguration.Status.ENABLED;
             String netSSID = "\"" + networkSSID + "\"";
             if (wifiConfig.SSID.equals(netSSID)) {
+                Log.i(LOG_TAG, "network id, " + wifiConfig.networkId);
                 state = wm.enableNetwork(wifiConfig.networkId, true);
                 Log.i(LOG_TAG, "state, " + state);
                 Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
@@ -227,7 +228,7 @@ public class AQMConnectionFragment extends Fragment {
         int netId = wifiManager.addNetwork(wifiConfig);
         Log.i(LOG_TAG, "netId, " + netId);
         wifiManager.disconnect();
-        boolean x = wifiManager.enableNetwork(networkId, true);
+        boolean x = wifiManager.enableNetwork(netId, true);
         Log.i(LOG_TAG, "x, " + x);
         wifiManager.reconnect();
     }
