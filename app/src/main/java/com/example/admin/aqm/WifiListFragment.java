@@ -39,7 +39,9 @@ public class WifiListFragment extends Fragment {
  private static final String LOG_TAG = WifiListFragment.class.getSimpleName();
     private WifiManager wifiManager;
     private ArrayAdapter wifiListAdapter;
+    private WifiListAdapter wifiAdapter;
     private List<String> availableWifiSSIdList;
+    private Dialog dialog1;
 
     @BindView(R.id.wifi_list_view)
     ListView wifiListView;
@@ -62,6 +64,9 @@ public class WifiListFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getWifiResults() {
+        if (getActivity() == null) {
+            return;
+        }
         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (!wifiManager.isWifiEnabled()) {
             // If wifi disabled then enable it
@@ -78,14 +83,18 @@ public class WifiListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().registerReceiver(wifiScanReceiver,
-                new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiManager.startScan();
+        if (getActivity() != null) {
+            getActivity().registerReceiver(wifiScanReceiver,
+                    new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+            wifiManager.startScan();
+        }
     }
 
     @Override
     public void onPause() {
-        getActivity().unregisterReceiver(wifiScanReceiver);
+        if (getActivity() != null) {
+            getActivity().unregisterReceiver(wifiScanReceiver);
+        }
         super.onPause();
     }
 
@@ -107,9 +116,10 @@ public class WifiListFragment extends Fragment {
                     sb.append("\n\n");
                     availableWifiSSIdList.add(scanResults.get(i).SSID);
                 }
-                wifiListAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item,
-                        R.id.wifi_name_text, availableWifiSSIdList);
-                wifiListView.setAdapter(wifiListAdapter);
+                wifiAdapter = new WifiListAdapter(getActivity(), R.layout.wifi_list_item, availableWifiSSIdList);
+               /* wifiListAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item,
+                        R.id.wifi_name_text, availableWifiSSIdList);*/
+                wifiListView.setAdapter(wifiAdapter);
                 wifiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
@@ -123,8 +133,8 @@ public class WifiListFragment extends Fragment {
     };
 
     private void openDialog(final String wifiSSIDName) {
-        final Dialog dialog1 = new Dialog(getActivity());
-        dialog1.setContentView(R.layout.dialog_view);
+        dialog1 = new Dialog(getActivity());
+        dialog1.setContentView(R.layout.wifi_connection_dialog);
         final TextView wifiName = (TextView)dialog1.findViewById(R.id.wifi_ssid_name);
         wifiName.setText(wifiSSIDName);
         final EditText passwordEditText = (EditText)dialog1.findViewById(R.id.input_password_text);
@@ -134,6 +144,9 @@ public class WifiListFragment extends Fragment {
             public void onClick(View view) {
                 if (!passwordEditText.getText().toString().isEmpty()) {
                     String wifiPassword = passwordEditText.getText().toString();
+                    if (getActivity() == null) {
+                        return;
+                    }
                     WifiManager wm = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                     List<WifiConfiguration> networks = wm.getConfiguredNetworks();
                     Log.i(LOG_TAG, "all networks, " + networks);
@@ -142,7 +155,11 @@ public class WifiListFragment extends Fragment {
                     }
                     Iterator<WifiConfiguration> iterator = networks.iterator();
                     Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
-                    connectToWifi(wifiSSIDName, wifiPassword);
+                    dialog1.dismiss();
+                    if (getActivity() != null) {
+                        ((HomeActivity) getActivity()).openConnectToRouterFragment();
+                    }
+
 /*
                     while (iterator.hasNext()) {
                         WifiConfiguration wifiConfig = iterator.next();
@@ -173,7 +190,9 @@ public class WifiListFragment extends Fragment {
                     }
 */
                 }else  {
-                    Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
+                    }
                 }
              }
         });
@@ -187,6 +206,9 @@ public class WifiListFragment extends Fragment {
         WifiConfiguration conf = new WifiConfiguration();
         conf.SSID = "\"" + networkSSID + "\"";
         conf.preSharedKey = "\""+ networkPass +"\"";
+        if (getActivity() == null) {
+            return;
+        }
         WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.addNetwork(conf);
         Log.i(LOG_TAG, "conf netId, " + wifiManager.addNetwork(conf));
@@ -203,7 +225,6 @@ public class WifiListFragment extends Fragment {
                 break;
             }
         }
-
     }
 
 
@@ -282,9 +303,6 @@ public class WifiListFragment extends Fragment {
             Log.i(LOG_TAG, "netId already, " + netId);
             Log.i(LOG_TAG, "wifi network already, " + wifiInfo.getNetworkId());
 
-          //  wm.saveConfiguration();
-            //wm.disconnect();
-            //Thread.sleep(3*1000);
             state = wm.enableNetwork(wifiConfig.networkId, true);
             Log.i(LOG_TAG, "state, " + state);
             Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
@@ -309,8 +327,8 @@ public class WifiListFragment extends Fragment {
         }
 
         wifiConfig.status = WifiConfiguration.Status.ENABLED;
-        //wifiConfig.SSID = String.format("\"%s\"", wifiSSIDName);
-        wifiConfig.SSID = wifiSSIDName;
+        wifiConfig.SSID = String.format("\"%s\"", wifiSSIDName);
+      //  wifiConfig.SSID = wifiSSIDName;
         wifiConfig.preSharedKey = String.format("\"%s\"", wifiPassword);
         wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
         wifiConfig.hiddenSSID = false;
@@ -338,6 +356,7 @@ public class WifiListFragment extends Fragment {
         Log.i(LOG_TAG, "x, " + x);
         Log.i(LOG_TAG, "connected network, " + wifiInfo.getSSID());
         wifiManager.reconnect();
+        dialog1.dismiss();
     }
 
     private int getExistingNetworkId(String SSID) {
@@ -351,5 +370,14 @@ public class WifiListFragment extends Fragment {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog1 != null) {
+            dialog1.dismiss();
+            dialog1 = null;
+        }
     }
 }

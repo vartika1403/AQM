@@ -30,6 +30,10 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
+            <item
+                android:id="@+id/nav_wifi_config"
+                android:icon="@drawable/ic_menu_wifi"
+                android:title="Wifi Config"/>
         </menu>
     </item>
 

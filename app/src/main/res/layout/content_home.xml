@@ -8,7 +8,7 @@
     tools:context="com.example.admin.aqm.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
-    <ImageView
+   <!-- <ImageView
         android:id="@+id/aqm_device_image"
         android:layout_margin="20dp"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/scan_for_aqm_wifi"
         android:textColor="#ffffff"/>
-
+-->
 
     <FrameLayout
         android:id="@+id/frame_container"

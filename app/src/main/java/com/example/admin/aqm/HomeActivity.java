@@ -39,8 +39,10 @@ public class HomeActivity extends AppCompatActivity
     @BindView(R.id.frame_container)
     FrameLayout frameContainer;
 
+/*
     @BindView(R.id.scan_aqm_wifi_button)
     Button scanAqmWifiButton;
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,8 @@ public class HomeActivity extends AppCompatActivity
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-      //  FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        //fragmentTransaction.replace(R.id.frame_container,new ScanWifiFragment()).addToBackStack(null).commit();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container,new ScanWifiFragment()).addToBackStack(null).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -124,6 +126,8 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_wifi_config) {
+            openAvailableWifiNetworkFragment();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -156,15 +160,20 @@ public class HomeActivity extends AppCompatActivity
                 .addToBackStack(null).commit();
     }
 
-    @OnClick(R.id.scan_aqm_wifi_button)
+    public void openScanWifiFrgament() {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container,new ScanWifiFragment()).addToBackStack(null).commit();
+    }
+
+  /*  @OnClick(R.id.scan_aqm_wifi_button)
     public void showAvailableWifiNetworks() {
         openAvailableWifiNetworkFragment();
-        scanAqmWifiButton.setVisibility(View.INVISIBLE);
-/*
+       // scanAqmWifiButton.setVisibility(View.INVISIBLE);
+*//*
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment()).commit();
-*/
-    }
+*//*
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -175,8 +184,9 @@ public class HomeActivity extends AppCompatActivity
 
         int count = getFragmentManager().getBackStackEntryCount();
 
-        if (count == 0) {
+        if (count == 1) {
            // scanAqmWifiButton.setVisibility(View.VISIBLE);
+            finish();
             super.onBackPressed();
             //additional code
         } else {

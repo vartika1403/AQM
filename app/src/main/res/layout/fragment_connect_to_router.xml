@@ -44,16 +44,5 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/connect_button"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="SUBMIT"
-        android:textColor="@color/colorWhite"
-        android:textSize="26sp"
-        android:background="@drawable/scan_aqm_wifi_button_background"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

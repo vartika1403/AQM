@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/wifi_networks_text" />
 
+<!--
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
@@ -21,12 +22,20 @@
         android:layout_below="@id/wifi_networks_text"
         android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
+-->
 
     <ListView
         android:id="@+id/wifi_list_view"
+        android:layout_below="@id/wifi_networks_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/separator"
         android:layout_marginTop="10dp"/>
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wifi_list_view"
+        android:layout_marginTop="10dp"
+        android:background="#c0c0c0" />
 
 </RelativeLayout>

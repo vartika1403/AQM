@@ -14,8 +14,10 @@ import butterknife.OnClick;
 public class ScanWifiFragment extends Fragment {
     private static final String LOG_TAG = ScanWifiFragment.class.getSimpleName();
 
+/*
     @BindView(R.id.scan_aqm_wifi_button)
     Button scanAqmWifiButton;
+*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,12 +34,10 @@ public class ScanWifiFragment extends Fragment {
         return view;
     }
 
+/*
     @OnClick(R.id.scan_aqm_wifi_button)
     public void showAvailableWifiNetworks() {
         ((HomeActivity)getActivity()).openAvailableWifiNetworkFragment();
-/*
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment()).commit();
-*/
     }
+*/
 }

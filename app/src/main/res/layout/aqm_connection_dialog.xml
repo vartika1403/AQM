@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/aqm_backside_image"
+        android:src="@drawable/aqm_backside_image"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/instruction_text"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/enter_password_aqm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_marginTop="20dp"
+        android:text="OK"
+        android:background="@color/colorNavyBlue"
+        android:textColor="@color/colorWhite"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
