@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/sign_in_log_in_screen"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:id="@+id/log_in_button"
+        android:text="LOG IN"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/log_in_button_background"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:text="SIGN IN"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/sign_in_button_background"
+        android:layout_centerHorizontal= "true"
+        android:layout_above="@id/log_in_button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/frame_container_sign_in"
+        android:alpha="0.8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+</RelativeLayout>

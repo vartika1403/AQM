@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "823257819710",
+    "project_id": "aqmapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823257819710:android:ab0a9a3dd689603b",
+        "android_client_info": {
+          "package_name": "com.example.admin.aqm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823257819710-cbi7ie0ioaoo0beqk7qb8n18li7i33hu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.admin.aqm",
+            "certificate_hash": "178f1a6067887c25561bd723889ad0ad8ad29868"
+          }
+        },
+        {
+          "client_id": "823257819710-c2clm8drgiet05dr7c5s4evt5qfet4vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhGrdhJ3lKpqVuNn7N4vorkjsywnNl5-g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

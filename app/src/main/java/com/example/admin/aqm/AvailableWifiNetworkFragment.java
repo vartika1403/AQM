@@ -95,8 +95,8 @@ public class AvailableWifiNetworkFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-               // openWifiSettings();
-                openAQMConnectionDialog(wifiSSIDName);
+                openWifiSettings();
+                //openAQMConnectionDialog(wifiSSIDName);
             }
         });
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -123,12 +123,8 @@ public class AvailableWifiNetworkFragment extends Fragment {
                     if (getActivity() == null) {
                         return;
                     }
-                    try {
-                        connectToWifiOnMarshMallow(wifiSSIDName, wifiPassword);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                        openWifiSettings();
+                      //  connectToWifiOnMarshMallow(wifiSSIDName, wifiPassword);
                 }
         }
     });

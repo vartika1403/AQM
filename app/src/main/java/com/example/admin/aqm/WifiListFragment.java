@@ -144,13 +144,16 @@ public class WifiListFragment extends Fragment {
             public void onClick(View view) {
                 if (!passwordEditText.getText().toString().isEmpty()) {
                     String wifiPassword = passwordEditText.getText().toString();
+                    Log.i(LOG_TAG, "wifiPassword, " + wifiPassword);
                     if (getActivity() == null) {
+                        dialog1.dismiss();
                         return;
                     }
                     WifiManager wm = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                     List<WifiConfiguration> networks = wm.getConfiguredNetworks();
                     Log.i(LOG_TAG, "all networks, " + networks);
                     if (networks == null) {
+                        dialog1.dismiss();
                         return;
                     }
                     Iterator<WifiConfiguration> iterator = networks.iterator();
@@ -159,37 +162,7 @@ public class WifiListFragment extends Fragment {
                     if (getActivity() != null) {
                         ((HomeActivity) getActivity()).openConnectToRouterFragment();
                     }
-
-/*
-                    while (iterator.hasNext()) {
-                        WifiConfiguration wifiConfig = iterator.next();
-                       // Log.i(LOG_TAG, "wifiConfig ssid, " + wifiConfig.SSID);
-                        //Log.i(LOG_TAG, "networkSSID, " + "\"" + wifiSSIDName + "\"");
-                        String netSSID = "\"" + wifiSSIDName + "\"";
-                     //   connectToWifi(wifiSSIDName, wifiPassword);
-                        //connectToWifiOnMarshMallow(wifiSSIDName, wifiPassword);
-                        if (wifiConfig.SSID.equals(netSSID)) {
-                           // Log.i(LOG_TAG, "already configured");
-
-                            //try {
-                          //  connectToWifiOnMarshMallow(wifiSSIDName, wifiPassword);
-                           // connectToConfiguredWifi(wifiSSIDName, wifiPassword);
-                              //  connnectToWifiOnLollipop(wifiSSIDName, wifiPassword, wifiConfig);
-                            // } catch (InterruptedException e) {
-                            //   e.printStackTrace();
-                            //}
-
-                        }*/
-/* else {
-                            Log.i(LOG_TAG, "not already conf");
-                            connectToWifi(wifiSSIDName, wifiPassword);
-                        }*//*
-
-                        dialog1.dismiss();
-
-                    }
-*/
-                }else  {
+                } else  {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
                     }

@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorSkyBlue"
+    tools:context="com.example.admin.aqm.SignInFragment">
+
+    <TextView
+        android:id="@+id/sign_in_text"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:text="@string/sign_in_text" />
+
+    <View
+        android:id="@+id/sign_in_view"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorWhite"
+        android:layout_below="@id/sign_in_text"
+        android:layout_width="110dp"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:id="@+id/google_fb_login"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/google_sign_in_button"
+            app:srcCompat = "@drawable/ic_google_plus"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/description_text"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
+
+
+       <!-- <ImageView
+            android:id="@+id/facebook_sign_in_button"
+            app:srcCompat = "@drawable/ic_facebook_logo_button"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/google_sign_in_button"
+            android:layout_toEndOf="@id/google_sign_in_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/description_text"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+-->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/description_text"
+        android:layout_above="@id/google_fb_login"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/you_can_also_sign_up_with"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_marginTop="30dp"
+        android:text="SIGN UP"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background"
+        android:layout_above="@id/description_text"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content" />
+
+    <AutoCompleteTextView
+        android:id="@+id/password_text"
+        android:layout_above="@id/sign_in_button"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="220dp"
+        android:theme="@style/Autocomplete"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:textColor="@color/colorWhite"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/email_text"
+        android:layout_above="@id/password_text"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="220dp"
+        android:theme="@style/Autocomplete"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textColor="@color/colorWhite"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/name_text"
+        android:layout_above="@id/email_text"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="220dp"
+        android:theme="@style/Autocomplete"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:textColor="@color/colorWhite"/>
+
+</RelativeLayout>
