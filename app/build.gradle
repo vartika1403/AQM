@@ -10,7 +10,7 @@ android {
             url "http://jcenter.bintray.com/"
         }
 */
-         mavenCentral()
+        mavenCentral()
     }
     defaultConfig {
         applicationId "com.example.admin.aqm"
@@ -35,8 +35,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    // compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:appcompat-v7:25.3.1'
-   // compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
     compile 'com.google.android.gms:play-services-auth:9.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -48,4 +48,7 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+
+
 

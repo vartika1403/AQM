@@ -22,6 +22,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -97,10 +98,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     @BindView(R.id.google_sign_in_button)
     public ImageView googleSignIn;
 
-/*
+
     @BindView(R.id.facebook_sign_in_button)
     public ImageView facebookSignIn;
-*/
+
 
     public static SignInFragment newInstance(String param1, String param2) {
         SignInFragment fragment = new SignInFragment();
@@ -155,7 +156,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
 
 
-      //  LoginManager.getInstance().setReadPermissions("user_friends");
+      // LoginManager.getInstance().setReadPermissions("user_friends");
      //   LoginManager.getInstance().registerCallback(callbackManager, callback);
 
 /*
@@ -183,18 +184,20 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+       // LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+
 /*
         loginButton.setReadPermissions("user_friends");
-      //  loginButton.setFragment(this.getTargetFragment());
+      //  loginButton.setFragment(this.getTargetFragment());Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends")
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
         loginButton.setReadPermissions("user_birthday");
 */
-        loginButton.setFragment(this);
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday", "user_friends"));
-        loginButton.registerCallback(callbackManager,callback);
+  //      loginButton.setFragment(this);
+    //    loginButton.setReadPermissions(Arrays.asList(
+           //     "public_profile", "email", "user_birthday", "user_friends"));
+      //  loginButton.registerCallback(callbackManager,callback);
     }
 
     @Override
@@ -289,12 +292,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-/*    @OnClick(R.id.facebook_sign_in_button)
+   @OnClick(R.id.facebook_sign_in_button)
     public void signInWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this.getActivity()
-                ,Arrays.asList("public_profile", "user_friends"));
-
-    }*/
+       LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(
+               "public_profile", "email", "user_birthday", "user_friends"));
+       //  LoginManager.getInstance().
+       LoginManager.getInstance().registerCallback(callbackManager, callback);
+    }
 
     @Override
     public void onPause() {
@@ -319,7 +323,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         }
         super.onDetach();
     }
-
 
     @Override
     public void onClick(View view) {

@@ -36,12 +36,13 @@
         <ImageView
             android:id="@+id/google_sign_in_button"
             app:srcCompat = "@drawable/ic_google_plus"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/description_text"
             android:layout_width="24dp"
             android:layout_height="24dp" />
 
+<!--
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
@@ -49,12 +50,13 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp" />
+-->
 
 
-       <!-- <ImageView
+        <ImageView
             android:id="@+id/facebook_sign_in_button"
             app:srcCompat = "@drawable/ic_facebook_logo_button"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_toRightOf="@id/google_sign_in_button"
             android:layout_toEndOf="@id/google_sign_in_button"
             android:layout_marginLeft="20dp"
@@ -63,7 +65,7 @@
             android:layout_below="@id/description_text"
             android:layout_width="24dp"
             android:layout_height="24dp" />
--->
+
     </LinearLayout>
 
     <TextView
@@ -84,20 +86,78 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_background"
         android:layout_above="@id/description_text"
-        android:layout_width="220dp"
+        android:layout_width="310dp"
         android:layout_height="wrap_content" />
 
-    <AutoCompleteTextView
-        android:id="@+id/password_text"
-        android:layout_above="@id/sign_in_button"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="220dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_in_password_text"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
         android:theme="@style/Autocomplete"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:textColor="@color/colorWhite"/>
+        android:textColorHint="@color/colorWhite"
+        android:layout_above="@id/sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+        <EditText
+            android:id="@+id/edit_text_signIn_password"
+            android:textColor="@color/colorWhite"
+            android:layout_width="320dp"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"
+            android:hint="Password"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_in_email_text"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        android:theme="@style/Autocomplete"
+        android:layout_above="@id/sign_in_password_text"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_text_signIn_email"
+            android:textColor="@color/colorWhite"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:hint="Email"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/name_text"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        android:theme="@style/Autocomplete"
+        android:layout_above="@id/sign_in_email_text"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_text_name"
+            android:textColor="@color/colorWhite"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:hint="Name"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--
+        <AutoCompleteTextView
+            android:id="@+id/password_text"
+            android:layout_above="@id/sign_in_button"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="220dp"
+            android:theme="@style/Autocomplete"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColor="@color/colorWhite"/>
+    -->
+
+<!--
     <AutoCompleteTextView
         android:id="@+id/email_text"
         android:layout_above="@id/password_text"
@@ -108,7 +168,9 @@
         android:layout_height="wrap_content"
         android:hint="Email"
         android:textColor="@color/colorWhite"/>
+-->
 
+<!--
     <AutoCompleteTextView
         android:id="@+id/name_text"
         android:layout_above="@id/email_text"
@@ -119,5 +181,6 @@
         android:layout_height="wrap_content"
         android:hint="Name"
         android:textColor="@color/colorWhite"/>
+-->
 
 </RelativeLayout>

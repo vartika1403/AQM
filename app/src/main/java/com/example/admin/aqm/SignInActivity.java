@@ -7,13 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.facebook.FacebookSdk;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SignInActivity extends AppCompatActivity {
     private static final String LOG_TAG = SignInActivity.class.getSimpleName();
@@ -63,14 +59,12 @@ public class SignInActivity extends AppCompatActivity {
                 .addToBackStack(null).commit();
     }
 
-/*
     @OnClick(R.id.log_in_button)
     public void openLogInFragment() {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.frame_container_sign_in, new LogInFragment())
                 .addToBackStack(null).commit();
     }
-*/
 
     public void showButton() {
         logInButton.setVisibility(View.VISIBLE);

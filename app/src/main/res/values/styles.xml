@@ -20,6 +20,8 @@
     <style name="Autocomplete">
         <item name="colorControlNormal">@color/colorWhite</item>
         <item name="colorControlActivated">@color/colorWhite</item>
+        <item name="android:textColorHint">#fff</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
@@ -27,7 +29,9 @@
         <item name="colorAccent">@color/colorWhite</item>
         <item name="colorControlNormal">@color/colorWhite</item>
         <item name="colorControlActivated">@color/colorWhite</item>
+        <!--
         <item name="colorControlHighlight">@color/colorWhite</item>
+-->
     </style>
 
 

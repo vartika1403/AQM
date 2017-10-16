@@ -3,13 +3,35 @@ package com.example.admin.aqm;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class LogInFragment extends Fragment {
     private static final String LOG_TAG = LogInFragment.class.getSimpleName();
+
+    @BindView(R.id.google_log_in_button)
+    public ImageView googleLogIn;
+
+    @BindView(R.id.facebook_log_in_button)
+    public ImageView fbLogIn;
+
+    @BindView(R.id.log_in_button)
+    public Button logInButton;
+
+    @BindView(R.id.edit_text_logIn_password)
+    public EditText editTextLogInPassword;
+
+    @BindView(R.id.edit_text_logIn_email)
+    public EditText editTextLogInEmail;
 
     private OnFragmentInteractionListener mListener;
 
@@ -62,6 +84,14 @@ public class LogInFragment extends Fragment {
             activity.showButton();
         }
         super.onPause();
+    }
+
+    @OnClick(R.id.log_in_button)
+    public void openDashBoardScreen() {
+        if (!editTextLogInEmail.getText().toString().isEmpty() &&
+                !editTextLogInPassword.getText().toString().isEmpty()) {
+            
+        }
     }
 
     @Override

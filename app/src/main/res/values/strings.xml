@@ -23,5 +23,12 @@
     <string name="you_can_also_sign_up_with">You Can Also Sign up With</string>
     <string name="facebook_app_id">118602105499714</string>
     <string name="fb_login_protocol_scheme">fb118602105499714</string>
+    <string name="welcome_screen1_title">HEADLINE - 1</string>
+    <string name="welcome_screen1_desc">LoresInpus</string>
+    <string name="welcome_screen2_title">HEADLINE - 2</string>
+    <string name="welcome_screen2_desc">LoresInpus</string>
+    <string name="welcome_screen3_title">HEADLINE - 3</string>
+    <string name="welcome_screen3_desc">LoresInpus</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
 </resources>
 
