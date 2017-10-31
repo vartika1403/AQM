@@ -145,11 +145,24 @@ public class WifiListFragment extends Fragment {
                 if (!passwordEditText.getText().toString().isEmpty()) {
                     String wifiPassword = passwordEditText.getText().toString();
                     Log.i(LOG_TAG, "wifiPassword, " + wifiPassword);
+                   // ((HomeActivity) getActivity()).openConnectToRouterFragment();
+                    dialog1.dismiss();
+                    ((HomeActivity) getActivity()).openConnectToRouterFragment();
+                    return;
+/*
+                    if (getActivity() != null) {
+                        ((HomeActivity) getActivity()).openConnectToRouterFragment();
+                    }
+*/
+/*
                     if (getActivity() == null) {
                         dialog1.dismiss();
                         return;
                     }
-                    WifiManager wm = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+*/
+/*
+                    WifiManager wm = (WifiManager) getActivity().getApplicationContext()
+                            .getSystemService(Context.WIFI_SERVICE);
                     List<WifiConfiguration> networks = wm.getConfiguredNetworks();
                     Log.i(LOG_TAG, "all networks, " + networks);
                     if (networks == null) {
@@ -162,6 +175,7 @@ public class WifiListFragment extends Fragment {
                     if (getActivity() != null) {
                         ((HomeActivity) getActivity()).openConnectToRouterFragment();
                     }
+*/
                 } else  {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();

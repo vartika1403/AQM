@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -57,28 +58,31 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         @Override
         public void onSuccess(LoginResult loginResult) {
             Log.i(LOG_TAG, "loginResult is, " + loginResult.getAccessToken().getToken());
-            if(Profile.getCurrentProfile() == null) {
+            if (Profile.getCurrentProfile() == null) {
                 profileTracker = new ProfileTracker() {
                     @Override
                     protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                         Log.i("facebook - profile", currentProfile.getFirstName());
-                 //       Log.i("facebook - profile email", currentProfile.)
+                        //       Log.i("facebook - profile email", currentProfile.)
+                        SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName"
+                                , currentProfile.getFirstName());
                         profileTracker.stopTracking();
                     }
                 };
-                // no need to call startTracking() on mProfileTracker
-                // because it is called by its constructor, internally.
-            }
-            else {
+            } else {
                 Profile profile = Profile.getCurrentProfile();
-                Log.v("facebook - profile", profile.getFirstName());
+                Log.i("facebook - profile", profile.getFirstName());
+                SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName"
+                        , profile.getFirstName());
             }
-           // AccessToken accessToken = loginResult.getAccessToken().getToken();
+            // AccessToken accessToken = loginResult.getAccessToken().getToken();
             //Log.i(LOG_TAG, "accessToken, " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             Log.i(LOG_TAG, "profile on success, " + profile);
             // nextActivity(profile);
-            Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();    }
+            Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
+            openHomeActivity();
+        }
 
         @Override
         public void onCancel() {
@@ -97,11 +101,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
     @BindView(R.id.google_sign_in_button)
     public ImageView googleSignIn;
-
-
     @BindView(R.id.facebook_sign_in_button)
     public ImageView facebookSignIn;
-
+    @BindView(R.id.edit_text_signIn_password)
+    public EditText editTextSignInPassword;
+    @BindView(R.id.edit_text_signIn_email)
+    public EditText editTextSignInEmail;
+    @BindView(R.id.edit_text_name)
+    public EditText editTextSignInName;
 
     public static SignInFragment newInstance(String param1, String param2) {
         SignInFragment fragment = new SignInFragment();
@@ -122,7 +129,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             }
         };
 
-          profileTracker = new ProfileTracker() {
+        profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 Log.i(LOG_TAG, "oldProfile, " + oldProfile + " " + currentProfile);
@@ -132,17 +139,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
         tracker.startTracking();
         profileTracker.startTracking();
-
-        if (getArguments() != null) {
-          //  FacebookSdk.sdkInitialize(getApplicationContext());
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       // LoginManager.getInstance().logInWithReadPermissions(this.getActivity(), Arrays.asList(PERMISSIONS));
+        // LoginManager.getInstance().logInWithReadPermissions(this.getActivity(), Arrays.asList(PERMISSIONS));
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         ButterKnife.bind(this, view);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -155,9 +158,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                 .build();
 
 
-
-      // LoginManager.getInstance().setReadPermissions("user_friends");
-     //   LoginManager.getInstance().registerCallback(callbackManager, callback);
+        // LoginManager.getInstance().setReadPermissions("user_friends");
+        //   LoginManager.getInstance().registerCallback(callbackManager, callback);
 
 /*
         facebookSignIn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -184,7 +186,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        // LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
 
 /*
         loginButton.setReadPermissions("user_friends");
@@ -194,10 +196,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         loginButton.setReadPermissions("email");
         loginButton.setReadPermissions("user_birthday");
 */
-  //      loginButton.setFragment(this);
-    //    loginButton.setReadPermissions(Arrays.asList(
-           //     "public_profile", "email", "user_birthday", "user_friends"));
-      //  loginButton.registerCallback(callbackManager,callback);
+        //      loginButton.setFragment(this);
+        //    loginButton.setReadPermissions(Arrays.asList(
+        //     "public_profile", "email", "user_birthday", "user_friends"));
+        //  loginButton.registerCallback(callbackManager,callback);
     }
 
     @Override
@@ -236,7 +238,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
-                   // hideProgressDialog();
+                    // hideProgressDialog();
                     handleSignInResult(googleSignInResult);
                 }
             });
@@ -272,6 +274,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                 return;
             }
             Log.d(LOG_TAG, "display name: " + acct.getDisplayName());
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("GoogleUserName", acct.getDisplayName());
 
             String personName = acct.getDisplayName();
             String personPhotoUrl = " ";
@@ -283,7 +286,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             Log.d(LOG_TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
 
+            openHomeActivity();
         }
+    }
+
+    public void openHomeActivity() {
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        startActivity(intent);
+        return;
     }
 
     @OnClick(R.id.google_sign_in_button)
@@ -292,12 +302,32 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-   @OnClick(R.id.facebook_sign_in_button)
+    @OnClick(R.id.facebook_sign_in_button)
     public void signInWithFacebook() {
-       LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(
-               "public_profile", "email", "user_birthday", "user_friends"));
-       //  LoginManager.getInstance().
-       LoginManager.getInstance().registerCallback(callbackManager, callback);
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
+        //  LoginManager.getInstance().
+        LoginManager.getInstance().registerCallback(callbackManager, callback);
+    }
+
+    @OnClick(R.id.sign_in_button)
+    public void signIn() {
+        if (!editTextSignInEmail.getText().toString().isEmpty() &&
+                !editTextSignInPassword.getText().toString().isEmpty() &&
+                !editTextSignInName.getText().toString().isEmpty()) {
+            String userName = editTextSignInName.getText().toString();
+            String password = editTextSignInPassword.getText().toString();
+            String email = editTextSignInEmail.getText().toString();
+            Log.i(LOG_TAG, "sign in user name, " + userName);
+            Log.i(LOG_TAG, "sign in password, " + password);
+            Log.i(LOG_TAG, "sign in email, " + email);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("UserName", userName);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("Password", password);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("Email", email);
+            openHomeActivity();
+        } else {
+            Toast.makeText(getActivity(), "Please enter correct details", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -337,7 +367,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(LOG_TAG, "requestCode, "+ requestCode);
+        Log.i(LOG_TAG, "requestCode, " + requestCode);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {

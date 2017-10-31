@@ -3,8 +3,10 @@ package com.example.admin.aqm;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.ScanResult;
@@ -18,6 +20,9 @@ import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,6 +35,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +47,7 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class AvailableWifiNetworkFragment extends Fragment {
     private static final String LOG_TAG = AvailableWifiNetworkFragment.class.getSimpleName();
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
     @BindView(R.id.scan_wifi_text)
     TextView scanWifiText;
     @BindView(R.id.available_aqm_devices_list)
@@ -58,7 +65,8 @@ public class AvailableWifiNetworkFragment extends Fragment {
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 List<ScanResult> scanResults = wifiManager.getScanResults();
                 Log.i(LOG_TAG, "scanResult, " + scanResults);
-                scanWifiText.setText(R.string.available_networks);
+               // scanWifiText.setText(R.string.available_networks);
+                scanWifiText.setVisibility(View.INVISIBLE);
                 // add your logic here
                 StringBuilder sb = new StringBuilder();
                 sb.append("\n   Number Of Wifi connections :" + scanResults.size() + "\n\n");
@@ -204,6 +212,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -213,13 +222,25 @@ public class AvailableWifiNetworkFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_available_network, container, false);
         ButterKnife.bind(this, view);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("AQM List");
         Handler hand = new Handler();
         hand.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 progressBar.setVisibility(View.INVISIBLE);
-                getWifiResults();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity() != null &&
+                        getActivity().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                            PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+                    //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+
+                }else{
+                    getWifiResults();
+                    //do something, permission was previously granted; or legacy device
+                }
+               // getWifiResults();
             }
         }, 2000);
         return view;
@@ -259,6 +280,25 @@ public class AvailableWifiNetworkFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.home, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private void openWifiSettings() {
         Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
         startActivityForResult(intent, 1);
@@ -282,6 +322,17 @@ public class AvailableWifiNetworkFragment extends Fragment {
                     ((HomeActivity) getActivity()).openWifiListFragment();
                 }
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Do something with granted permission
+            getWifiResults();
         }
     }
 }

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorSkyBlue"
+    android:clickable="true"
     tools:context="com.example.admin.aqm.LogInFragment">
 
     <TextView
@@ -38,7 +39,6 @@
             app:srcCompat = "@drawable/ic_google_plus"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp" />
 
         <ImageView
@@ -46,12 +46,9 @@
             app:srcCompat = "@drawable/ic_facebook_logo_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@id/google_log_in_button"
-            android:layout_toRightOf="@id/google_log_in_button" />
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 
     <TextView
@@ -104,7 +101,6 @@
             android:layout_height="wrap_content"
             android:hint="Password"/>
     </android.support.design.widget.TextInputLayout>
-
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/log_in_email_text"

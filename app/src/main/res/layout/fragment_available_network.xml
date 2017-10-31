@@ -2,14 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
     tools:context="com.example.admin.aqm.AvailableWifiNetworkFragment">
+<!--
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:id="@+id/homeToolbar"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+-->
 
     <TextView
         android:id="@+id/scan_wifi_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerVertical="true"
         android:text="searching for AQM ..."
         android:textColor="@color/colorNavyBlue"
         android:textSize="30sp" />
@@ -38,9 +56,9 @@
     <ListView
         android:id="@+id/available_aqm_devices_list"
         android:layout_width="match_parent"
+        android:layout_below="@id/homeToolbar"
         android:layout_height="wrap_content"
-        android:layout_below="@id/scan_wifi_text"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="45dp"/>
 
     <View
         android:id="@+id/list_line"

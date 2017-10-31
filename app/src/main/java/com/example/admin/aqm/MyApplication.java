@@ -10,10 +10,6 @@ import android.util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by vartika on 10/10/17.
- */
-
 public class MyApplication extends Application {
 
     @Override

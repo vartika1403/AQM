@@ -1,6 +1,7 @@
 package com.example.admin.aqm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LogInFragment extends Fragment {
+public class LogInFragment extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = LogInFragment.class.getSimpleName();
 
     @BindView(R.id.google_log_in_button)
@@ -33,32 +37,27 @@ public class LogInFragment extends Fragment {
     @BindView(R.id.edit_text_logIn_email)
     public EditText editTextLogInEmail;
 
+    @BindView(R.id.forget_text)
+    public TextView forgetText;
+
     private OnFragmentInteractionListener mListener;
 
     public LogInFragment() {
         // Required empty public constructor
     }
 
-    public static LogInFragment newInstance(String param1, String param2) {
-        LogInFragment fragment = new LogInFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_log_in, container, false);
-        return view;
+        View fragmentView =  inflater.inflate(R.layout.fragment_log_in, container, false);
+        ButterKnife.bind(this,fragmentView);
+        return fragmentView;
     }
 
     @Override
@@ -86,17 +85,61 @@ public class LogInFragment extends Fragment {
         super.onPause();
     }
 
+    @OnClick(R.id.google_log_in_button)
+    public void loginInWithGoogle() {
+        String userName = SharedPreferenceUtils.getInstance(getActivity())
+                .getStringValue("GoogleUserName", "");
+        Log.i(LOG_TAG, "Log in google userName, " + userName);
+        if (userName != null && !userName.isEmpty()) {
+            Log.i(LOG_TAG, "GoogleUserName, " + userName);
+            openHomeActivity();
+        } else {
+                Toast.makeText(getActivity(), "First Sign In as New User", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void openHomeActivity() {
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        startActivity(intent);
+        return;
+    }
+
+    @OnClick(R.id.facebook_log_in_button)
+    public void loginWithFb() {
+        String userName = SharedPreferenceUtils.getInstance(getActivity())
+                .getStringValue("FacebookUserName", "");
+        Log.i(LOG_TAG, "Log in fb userName, " + userName);
+        if (userName != null && !userName.isEmpty()) {
+            Log.i(LOG_TAG, "FbUserName, " + userName);
+            openHomeActivity();
+        } else {
+            Toast.makeText(getActivity(), "First Sign In as New User", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @OnClick(R.id.log_in_button)
     public void openDashBoardScreen() {
         if (!editTextLogInEmail.getText().toString().isEmpty() &&
                 !editTextLogInPassword.getText().toString().isEmpty()) {
-            
+            openHomeActivity();
+        } else {
+            Toast.makeText(getActivity(), "Please enter correct details", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @OnClick(R.id.forget_text)
+    public void changePassword() {
+        Log.i(LOG_TAG, "forget text is clicked");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     public interface OnFragmentInteractionListener {

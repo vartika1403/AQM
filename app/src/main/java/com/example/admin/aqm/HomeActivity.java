@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
@@ -11,20 +12,26 @@ import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +45,16 @@ public class HomeActivity extends AppCompatActivity
 
     @BindView(R.id.frame_container)
     FrameLayout frameContainer;
+    @BindView(R.id.config_now_button)
+    Button configNowButton;
+    @BindView(R.id.home_image)
+    ImageView homeImage;
+    @BindView(R.id.text_good_air)
+    TextView goodAirText;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.homeToolbar)
+    AppBarLayout homeToolbar;
 
 /*
     @BindView(R.id.scan_aqm_wifi_button)
@@ -50,7 +67,8 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         }
@@ -59,7 +77,8 @@ public class HomeActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             permission = Settings.System.canWrite(this);
         } else {
-            permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED;
+            permission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED;
         }
         if (!permission) {
             //do your code
@@ -68,13 +87,14 @@ public class HomeActivity extends AppCompatActivity
                 intent.setData(Uri.parse("package:" + this.getPackageName()));
                 startActivityForResult(intent, CODE_WRITE_SETTINGS_PERMISSION);
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_SETTINGS}, CODE_WRITE_SETTINGS_PERMISSION);
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_SETTINGS}, CODE_WRITE_SETTINGS_PERMISSION);
             }
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container,new ScanWifiFragment()).addToBackStack(null).commit();
+    //    getSupportActionBar().hide();
+
+         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       //  setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,8 +102,16 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+       // toolbar.setVisibility(View.INVISIBLE);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        int colorBlue = Color.parseColor("#5fb6d9");
+        String textGoodAir = getString(R.string.good_is_air_text);
+        SpannableString spannableString = new SpannableString(textGoodAir);
+        spannableString.setSpan(new ForegroundColorSpan(colorBlue), 4, 8, 0);
+        goodAirText.setText(spannableString);
     }
 
     @Override
@@ -95,17 +123,22 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.config_now_button)
+    public void openAQMConnectionList() {
+        configNowButton.setVisibility(View.INVISIBLE);
+        homeImage.setVisibility(View.INVISIBLE);
+        goodAirText.setVisibility(View.INVISIBLE);
+        homeToolbar.setVisibility(View.VISIBLE);
+        openAvailableWifiNetworkFragment();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -184,13 +217,19 @@ public class HomeActivity extends AppCompatActivity
 
         int count = getFragmentManager().getBackStackEntryCount();
 
-        if (count == 1) {
-           // scanAqmWifiButton.setVisibility(View.VISIBLE);
-            finish();
-            super.onBackPressed();
+        if (count >  1) {
+            Log.i(LOG_TAG, "count, " + count);
+            getFragmentManager().popBackStack();
             //additional code
         } else {
-            getFragmentManager().popBackStack();
+            if (count == 0) {
+                finish();
+            }
+            configNowButton.setVisibility(View.VISIBLE);
+            homeImage.setVisibility(View.VISIBLE);
+            goodAirText.setVisibility(View.VISIBLE);
+            Log.i(LOG_TAG, "count, " + count);
+            super.onBackPressed();
         }
     }
 

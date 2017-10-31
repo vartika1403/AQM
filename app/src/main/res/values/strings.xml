@@ -6,7 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="available_networks">available AQM list</string>
+    <string name="available_networks">AQM list</string>
     <string name="wifi_error_message">wifi is disabled..making it enabled</string>
     <string name="scan_for_aqm_wifi">Scan for AQM Wifi</string>
 
@@ -22,6 +22,7 @@
     <string name="loading">Loading....</string>
     <string name="you_can_also_sign_up_with">You Can Also Sign up With</string>
     <string name="facebook_app_id">118602105499714</string>
+    <string name="good_is_air_text">How good is \n your air...</string>
     <string name="fb_login_protocol_scheme">fb118602105499714</string>
     <string name="welcome_screen1_title">HEADLINE - 1</string>
     <string name="welcome_screen1_desc">LoresInpus</string>
@@ -30,5 +31,6 @@
     <string name="welcome_screen3_title">HEADLINE - 3</string>
     <string name="welcome_screen3_desc">LoresInpus</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="air_quality_text">INDOOR \n AIR QUALITY INDEX</string>
 </resources>
 

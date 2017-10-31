@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,23 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
+/*
+        String userName = SharedPreferenceUtils.getInstance(this)
+                .getStringValue("GoogleUserName", "");
+        Log.i(LOG_TAG, "google user name, " + userName);
+        if (userName != null && !userName.isEmpty()) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+        }
+
+        String fbUserName = SharedPreferenceUtils.getInstance(this)
+                .getStringValue("FacebookUserName", "");
+        Log.i(LOG_TAG, "fb user name, " + fbUserName);
+        if (fbUserName != null && !fbUserName.isEmpty()) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+        }
+*/
         // layouts of all welcome sliders
         // add few more layouts if you want
         layouts = new int[]{
@@ -102,6 +120,30 @@ public class SplashActivity extends AppCompatActivity {
 
     @OnClick(R.id.skip_button)
     public void skipSplashScreen() {
+        String googleUserName = SharedPreferenceUtils.getInstance(this)
+                .getStringValue("GoogleUserName", "");
+        Log.i(LOG_TAG, "google user name, " + googleUserName);
+        if (googleUserName != null && !googleUserName.isEmpty()) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        String fbUserName = SharedPreferenceUtils.getInstance(this)
+                .getStringValue("FacebookUserName", "");
+        Log.i(LOG_TAG, "fb user name, " + fbUserName);
+        if (fbUserName != null && !fbUserName.isEmpty()) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            return;
+        }
+        String userName = SharedPreferenceUtils.getInstance(this)
+                .getStringValue("UserName", "");
+        if (userName != null && !userName.isEmpty()) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            return;
+        }
         launchHomeScreen();
     }
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.admin.aqm.HomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/homeToolbar"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -20,6 +20,43 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <ImageView
+        android:id="@+id/home_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/home_image" />
+
+    <Button
+        android:id="@+id/config_now_button"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/config_now_button_background"
+        android:padding="15dp"
+        android:text="CONFIG NOW"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/text_good_air"
+        android:layout_above="@id/config_now_button"
+        android:textSize="35sp"
+        android:alpha="0.7"
+        android:layout_marginBottom="30dp"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:text="@string/good_is_air_text"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="158dp" />
+
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+</RelativeLayout>
