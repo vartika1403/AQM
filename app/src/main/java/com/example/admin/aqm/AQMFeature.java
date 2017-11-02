@@ -1,12 +1,14 @@
 package com.example.admin.aqm;
 
 
+import java.util.Objects;
+
 public class AQMFeature {
-    public int image;
+    public Object image;
     public String quality;
     public String percentage;
 
-    public AQMFeature(int image, String quality, String percentage) {
+    public AQMFeature(Object image, String quality, String percentage) {
         this.image = image;
         this.quality = quality;
         this.percentage = percentage;
@@ -20,7 +22,7 @@ public class AQMFeature {
         return percentage;
     }
 
-    public int getImage() {
+    public Object getImage() {
         return image;
     }
 }

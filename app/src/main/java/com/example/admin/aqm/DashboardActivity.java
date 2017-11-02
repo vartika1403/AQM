@@ -1,10 +1,10 @@
 package com.example.admin.aqm;
 
-import android.app.DownloadManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -96,16 +96,16 @@ public class DashboardActivity extends AppCompatActivity {
         String vocValue = (Integer) payloadObject.get("VOC") + " ";
         AQMFeature aqmFeature1 = new AQMFeature(image1, "GREAT", humidity);
         featureList.add(aqmFeature1);
-        int image2 = R.drawable.ic_humidity;
+        String image2 = "CO2";
         AQMFeature aqmFeature2 = new AQMFeature(image2, "UNHEALTHY", co2Value);
         featureList.add(aqmFeature2);
         int image3 = R.drawable.ic_temperature;
         AQMFeature aqmFeature3 = new AQMFeature(image3, "GREAT", temp);
         featureList.add(aqmFeature3);
-        int image4 = Integer.parseInt("PM");
+        String image4 = "PM";
         AQMFeature aqmFeature4 = new AQMFeature(image4, "MODERATE", pmValue);
         featureList.add(aqmFeature4);
-        int image5 = Integer.parseInt("VOC");
+        String image5 = "VOC";
         AQMFeature aqmFeature5 = new AQMFeature(image5, "GREAT", vocValue);
         featureList.add(aqmFeature5);
 
@@ -113,7 +113,25 @@ public class DashboardActivity extends AppCompatActivity {
         for (AQMFeature aqmFeature : featureList) {
             View aqmChildFeatureLayout = getLayoutInflater().inflate(R.layout.aqm_child_features_layout, null);
             ImageView imageView = (ImageView) aqmChildFeatureLayout.findViewById(R.id.aqm_feature_image);
-            imageView.setImageResource(aqmFeature.getImage());
+            TextView textImage = (TextView) aqmChildFeatureLayout.findViewById(R.id.aqm_feature_text);
+            if (aqmFeature.getImage() instanceof String) {
+                if (aqmFeature.getImage().equals("CO2")) {
+                    String co2TextValue = getResources().getString(R.string.co2_value);
+                    Log.i(LOG_TAG, "co2TextValue, " + co2TextValue);
+                    textImage.setVisibility(View.VISIBLE);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        textImage.setText(Html.fromHtml("CO<sub>2</sub>",Html.FROM_HTML_MODE_LEGACY));
+                    } else {
+                        textImage.setText(Html.fromHtml("CO<sub>2</sub>"));
+                    }
+
+                } else {
+                    textImage.setVisibility(View.VISIBLE);
+                    textImage.setText(aqmFeature.getImage().toString());
+                }
+            } else {
+                imageView.setImageResource((Integer) aqmFeature.getImage());
+            }
             TextView qualityText = (TextView) aqmChildFeatureLayout.findViewById(R.id.quality_text);
             qualityText.setText(aqmFeature.getQuality());
             if (aqmFeature.getQuality().equals("GREAT")) {
