@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="60dp">
 
     <View
@@ -12,10 +13,25 @@
         android:background="#696969" />
 
     <ImageView
+        android:id="@+id/arrow_image"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/view"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        app:srcCompat="@drawable/ic_right_arrow" />
+
+    <ImageView
         android:id="@+id/aqm_feature_image"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
+        android:padding="10dp"
         android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:layout_below="@id/view"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp" />
@@ -34,19 +50,6 @@
         android:layout_marginStart="15dp"/>
 
     <TextView
-        android:id="@+id/quality_text"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_below="@id/view"
-        android:text="hi there"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="90dp"
-        android:layout_marginStart="90dp" />
-
-    <TextView
         android:id="@+id/percentage_text"
         android:layout_width="100dp"
         android:layout_height="60dp"
@@ -54,20 +57,23 @@
         android:gravity="center_vertical"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@id/quality_text"
-        android:layout_toRightOf="@id/quality_text" />
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:layout_toStartOf="@id/arrow_image" />
 
-    <ImageView
-        android:id="@+id/arrow_image"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/quality_text"
+        android:layout_width="100dp"
         android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/view"
+        android:textSize="15sp"
+        android:text="hi there"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@id/percentage_text"
+        android:layout_toStartOf="@id/percentage_text"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        app:srcCompat="@drawable/ic_right_arrow" />
+        android:gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
 </RelativeLayout>
