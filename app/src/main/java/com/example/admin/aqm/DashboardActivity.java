@@ -82,7 +82,6 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void addData(JSONObject payloadObject) throws JSONException {
@@ -108,6 +107,20 @@ public class DashboardActivity extends AppCompatActivity {
         String image5 = "VOC";
         AQMFeature aqmFeature5 = new AQMFeature(image5, "GREAT", vocValue);
         featureList.add(aqmFeature5);
+        AQMFeature aqmFeature6 = new AQMFeature(image1, "GREAT", humidity);
+        featureList.add(aqmFeature6);
+        String image6 = "CO2";
+        AQMFeature aqmFeature7 = new AQMFeature(image6, "UNHEALTHY", co2Value);
+        featureList.add(aqmFeature7);
+        int image7 = R.drawable.ic_temperature;
+        AQMFeature aqmFeature8 = new AQMFeature(image7, "GREAT", temp);
+        featureList.add(aqmFeature8);
+        String image8 = "PM";
+        AQMFeature aqmFeature9 = new AQMFeature(image8, "MODERATE", pmValue);
+        featureList.add(aqmFeature9);
+        String image9 ="VOC";
+        AQMFeature aqmFeature10 = new AQMFeature(image9, "GREAT", vocValue);
+        featureList.add(aqmFeature10);
 
         LinearLayout aqmFeatureLayout = (LinearLayout) findViewById(R.id.aqm_features);
         for (AQMFeature aqmFeature : featureList) {
@@ -132,6 +145,7 @@ public class DashboardActivity extends AppCompatActivity {
             } else {
                 imageView.setImageResource((Integer) aqmFeature.getImage());
             }
+
             TextView qualityText = (TextView) aqmChildFeatureLayout.findViewById(R.id.quality_text);
             qualityText.setText(aqmFeature.getQuality());
             if (aqmFeature.getQuality().equals("GREAT")) {

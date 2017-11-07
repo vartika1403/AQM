@@ -73,14 +73,20 @@
         android:layout_marginTop="10dp"
         android:text="AQM5678_LIVING ROOM" />
 
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:clipToPadding="true"
+        android:layout_below="@id/aqm_device_name_text"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/aqm_features"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/aqm_device_name_text"
-        android:layout_marginTop="20dp"
         android:gravity="center_vertical"
         android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progress_bar"
