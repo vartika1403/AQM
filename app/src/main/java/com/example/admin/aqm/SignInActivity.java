@@ -61,7 +61,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume of signInActivity");
-        openActivity();
+        //openActivity();
     }
 
     @Override

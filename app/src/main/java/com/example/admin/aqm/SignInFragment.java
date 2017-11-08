@@ -293,7 +293,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     public void openHomeActivity() {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
-        return;
     }
 
     @OnClick(R.id.google_sign_in_button)

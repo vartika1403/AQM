@@ -81,7 +81,7 @@ public class ConnectToRouterFragment extends Fragment {
             successfullyConnectedText.setText("successfully connected");
             tickMarkImage.setVisibility(View.VISIBLE);
             Log.i(LOG_TAG, "connected");
-
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
             Handler handler = new Handler();
             handler.postDelayed(r, 3000);
         } else {
@@ -94,7 +94,7 @@ public class ConnectToRouterFragment extends Fragment {
     final Runnable r = new Runnable() {
         public void run() {
             if (getActivity() != null) {
-                ((HomeActivity) getActivity()).openScanWifiFrgament();
+                ((HomeActivity) getActivity()).openDashBoardActivity();
             }
         }
     };

@@ -123,7 +123,14 @@ public class SplashActivity extends AppCompatActivity {
         String googleUserName = SharedPreferenceUtils.getInstance(this)
                 .getStringValue("GoogleUserName", "");
         Log.i(LOG_TAG, "google user name, " + googleUserName);
-        if (googleUserName != null && !googleUserName.isEmpty()) {
+        Boolean isConfigured = SharedPreferenceUtils.getInstance(this)
+                .getBooleanValue("config", false);
+        Log.i(LOG_TAG, "configured, " + isConfigured);
+        if (googleUserName != null && !googleUserName.isEmpty() && isConfigured) {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            return;
+        } else if (googleUserName != null && !googleUserName.isEmpty() && !isConfigured) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return;
@@ -132,14 +139,22 @@ public class SplashActivity extends AppCompatActivity {
         String fbUserName = SharedPreferenceUtils.getInstance(this)
                 .getStringValue("FacebookUserName", "");
         Log.i(LOG_TAG, "fb user name, " + fbUserName);
-        if (fbUserName != null && !fbUserName.isEmpty()) {
+        if (fbUserName != null && !fbUserName.isEmpty() && isConfigured) {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            return;
+        } else if (fbUserName != null && !fbUserName.isEmpty() && !isConfigured) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return;
         }
         String userName = SharedPreferenceUtils.getInstance(this)
                 .getStringValue("UserName", "");
-        if (userName != null && !userName.isEmpty()) {
+        if (userName != null && !userName.isEmpty() && isConfigured) {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            return;
+        } else if (userName != null && !userName.isEmpty() && !isConfigured) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return;
@@ -151,5 +166,11 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
         startActivity(intent);
       //  finish();
+    }
+
+    @Override()
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

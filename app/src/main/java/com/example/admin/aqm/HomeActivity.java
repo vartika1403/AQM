@@ -198,6 +198,11 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.frame_container,new ScanWifiFragment()).addToBackStack(null).commit();
     }
 
+    public void openDashBoardActivity() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+    }
+
   /*  @OnClick(R.id.scan_aqm_wifi_button)
     public void showAvailableWifiNetworks() {
         openAvailableWifiNetworkFragment();
@@ -223,14 +228,21 @@ public class HomeActivity extends AppCompatActivity
             //additional code
         } else {
             if (count == 0) {
+                configNowButton.setVisibility(View.INVISIBLE);
+                homeImage.setVisibility(View.INVISIBLE);
+                goodAirText.setVisibility(View.INVISIBLE);
+                Log.i(LOG_TAG, "count 0, " + count);
+                Intent intent = new Intent(this, SplashActivity.class);
+                startActivity(intent);
                 finish();
+            } else {
+                configNowButton.setVisibility(View.VISIBLE);
+                homeImage.setVisibility(View.VISIBLE);
+                goodAirText.setVisibility(View.VISIBLE);
+                Log.i(LOG_TAG, "count, " + count);
             }
-            configNowButton.setVisibility(View.VISIBLE);
-            homeImage.setVisibility(View.VISIBLE);
-            goodAirText.setVisibility(View.VISIBLE);
-            Log.i(LOG_TAG, "count, " + count);
-            super.onBackPressed();
         }
+        super.onBackPressed();
     }
 
     @SuppressLint("NewApi")

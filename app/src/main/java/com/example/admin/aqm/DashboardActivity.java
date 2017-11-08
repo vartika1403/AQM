@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -34,7 +35,9 @@ import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
 
 import org.json.JSONException;
@@ -42,8 +45,11 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -68,7 +74,8 @@ import jxl.write.biff.RowsExceededException;
 public class DashboardActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback {
     private static final String LOG_TAG = DashboardActivity.class.getSimpleName();
-    private static final String URL = "https://awonmn7coi.execute-api.ap-southeast-1.amazonaws.com/prod/getlivedatabyid?deviceId=AQMDevice03";
+    private static final String URL = "https://awonmn7coi.execute-api.ap-southeast-1.amazonaws.com" +
+            "/prod/getlivedatabyid?deviceId=AQMDevice03";
     private ArrayList<AQMFeature> featureList = new ArrayList<AQMFeature>();
     private static final int CODE_WRITE_SETTINGS_PERMISSION = 1;
     protected static final int REQUEST_CODE_RESOLUTION = 2;
@@ -77,7 +84,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     private GoogleApiClient googleApiClient;
     private Bitmap bitmapToSave;
     private Bitmap image;
-
+    private DriveId driveId;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -234,7 +241,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
                             Log.i(LOG_TAG, "item google drive clicked, " + i);
-                            downloadDataViaGoogleDrive();
+                          //  downloadDataViaGoogleDrive();
                         } else if (i == 1) {
                             Log.i(LOG_TAG, "item local storage clicked, " + i);
                             downloadDataInFileManager();
@@ -268,9 +275,11 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             for (int i = 0; i < featureList.size(); i++) {
                 String featureText = " ";
                 Log.i(LOG_TAG, "feature list, " + featureList.get(i));
-                if ((featureList.get(i).getImage() instanceof Integer && (Integer)featureList.get(i).getImage() == R.drawable.ic_temperature)) {
+                if ((featureList.get(i).getImage() instanceof Integer
+                        && (Integer) featureList.get(i).getImage() == R.drawable.ic_temperature)) {
                     featureText = "Temperature";
-                } else if (featureList.get(i).getImage() instanceof Integer && (Integer)featureList.get(i).getImage() == R.drawable.ic_humidity) {
+                } else if (featureList.get(i).getImage() instanceof Integer
+                        && (Integer) featureList.get(i).getImage() == R.drawable.ic_humidity) {
                     featureText = "Humidity";
                 } else {
                     featureText = (String) featureList.get(i).getImage();
@@ -305,8 +314,20 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     }
 
     private void downloadDataViaGoogleDrive() {
-
+/*
+        if (bitmapToSave == null) {
+            // This activity has no UI of its own. Just start the camera.
+            startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+                    REQUEST_CODE_CAPTURE_IMAGE);
+            return;
+        }
+*/
+        //saveFileToDrive();
+        saveExcelFileToDrive();
     }
+
+    private void saveExcelFileToDrive() {
+        }
 
     private void requestPermission(final Context context) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
@@ -340,10 +361,12 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             Log.d(LOG_TAG, "CODE_WRITE_SETTINGS_PERMISSION success");
             //do your code
         }
+/*
         if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == RESULT_OK) {
             googleApiClient.connect();
             Log.d(LOG_TAG, "Request code resolution success");
         }
+*/
 
         switch (requestCode) {
             case REQUEST_CODE_CAPTURE_IMAGE:
@@ -368,9 +391,12 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CODE_WRITE_SETTINGS_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == CODE_WRITE_SETTINGS_PERMISSION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             //do your code
             Log.i(LOG_TAG, "permission requested granted success");
         } else {
@@ -382,6 +408,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(LOG_TAG, "API client connected.");
         // create new contents resource
+/*
         if (bitmapToSave == null) {
             // This activity has no UI of its own. Just start the camera.
             startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),
@@ -389,6 +416,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             return;
         }
         saveFileToDrive();
+*/
     }
 
     private void saveFileToDrive() {
@@ -408,7 +436,8 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         // Called whenever the API client fails to connect.
         if (!connectionResult.hasResolution()) {
             // show the localized error dialog.
-            GoogleApiAvailability.getInstance().getErrorDialog(this, connectionResult.getErrorCode(), 0).show();
+            GoogleApiAvailability.getInstance().getErrorDialog(this,
+                    connectionResult.getErrorCode(), 0).show();
             return;
         }
         try {
@@ -442,6 +471,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
                     }
 
                     MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+                            .setMimeType("text/plain")
                             .setMimeType("image/jpeg").setTitle("Android Photo.png").build();
                     // Create an intent for the file chooser, and start it.
                     IntentSender intentSender = Drive.DriveApi
@@ -491,7 +521,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     @Override
     protected void onResume() {
         super.onResume();
-/*
+
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Drive.API).addScope(Drive.SCOPE_FILE)
@@ -502,7 +532,6 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             Log.i(LOG_TAG, "googleApiClient, " + googleApiClient);
         }
         googleApiClient.connect();
-*/
     }
 
     @Override
