@@ -267,6 +267,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             WritableSheet sheet = workbook.createSheet("First Sheet", 0);
             for (int i = 0; i < featureList.size(); i++) {
                 String featureText = " ";
+                Log.i(LOG_TAG, "feature list, " + featureList.get(i));
                 if ((featureList.get(i).getImage() instanceof Integer && (Integer)featureList.get(i).getImage() == R.drawable.ic_temperature)) {
                     featureText = "Temperature";
                 } else if (featureList.get(i).getImage() instanceof Integer && (Integer)featureList.get(i).getImage() == R.drawable.ic_humidity) {
@@ -288,9 +289,9 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
                 } catch (WriteException e) {
                     e.printStackTrace();
                 }
-
-                workbook.write();
             }
+            workbook.write();
+
             try {
                 workbook.close();
             } catch (WriteException e) {
@@ -415,7 +416,6 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         } catch (IntentSender.SendIntentException e) {
             Log.e(LOG_TAG, "Exception while starting resolution activity", e);
         }
-
     }
 
     final private ResultCallback<DriveApi.DriveContentsResult> driveContentsCallback =
