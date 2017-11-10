@@ -3,6 +3,7 @@ package com.example.admin.aqm;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,12 +20,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +40,6 @@ import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -45,12 +49,10 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -90,6 +92,8 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     ProgressBar progressBar;
     @BindView(R.id.download_image)
     ImageView downloadImage;
+    @BindView(R.id.setting_icon_image)
+    ImageView settingIconImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +118,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         OkHttpClient client = new OkHttpClient();
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, IOException e) {
                 Log.e("the failure ", e.getMessage());
             }
 
@@ -241,7 +245,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
                             Log.i(LOG_TAG, "item google drive clicked, " + i);
-                          //  downloadDataViaGoogleDrive();
+                            //  downloadDataViaGoogleDrive();
                         } else if (i == 1) {
                             Log.i(LOG_TAG, "item local storage clicked, " + i);
                             downloadDataInFileManager();
@@ -327,7 +331,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     }
 
     private void saveExcelFileToDrive() {
-        }
+    }
 
     private void requestPermission(final Context context) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
@@ -545,4 +549,86 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     public GoogleApiClient getGoogleApiClient() {
         return googleApiClient;
     }
+
+    @OnClick(R.id.setting_icon_image)
+    public void openSettingMenu() {
+        PopupMenu popup = new PopupMenu(DashboardActivity.this, settingIconImage);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.popup_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+               /* Toast.makeText(
+                        DashboardActivity.this,
+                        "You Clicked : " + item.getTitle(),
+                        Toast.LENGTH_SHORT
+                ).show();*/
+                if (item.getTitle().toString().equals("Reports")) {
+                    Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
+                    showCalender();
+                } else if (item.getTitle().toString().equals("Log Out")) {
+                    Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
+                    logOut();
+                }
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
+    }
+
+    private void logOut() {
+        SharedPreferenceUtils.getInstance(this).setValue("isLoggedIn", false);
+        Intent intent = new Intent(this, SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showCalender() {
+        final Dialog dialog = new Dialog(DashboardActivity.this);
+        // Include dialog.xml file
+        View view = (RelativeLayout)getLayoutInflater().inflate(R.layout.calendar_dialog,null);
+        dialog.setContentView(view);
+        // Set dialog title
+        //dialog.setTitle("Which day report you want to download?");
+
+        // set values for custom dialog components - text, image and button
+
+
+        CalendarView calendarView = (CalendarView)view.findViewById(R.id.calender_view);
+        //Initialize calendar with date
+        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+
+        //Show monday as first date of week
+        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
+        dialog.show();
+
+        //Show/hide overflow days of a month
+     //   calendarView.setShowOverflowDate(false);
+
+        //call refreshCalendar to update calendar the view
+       // calendarView.refreshCalendar(currentCalendar);
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        //show tVhe selected date as a toast
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                Log.i(LOG_TAG, "date is selected");
+                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+                 downloadDataInFileManager();
+                 dialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+          finish();
+          super.onBackPressed();
+    }
 }
+

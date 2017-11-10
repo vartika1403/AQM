@@ -54,6 +54,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     private GoogleApiClient googleApiClient;
     private CallbackManager callbackManager;
     private ProgressDialog progressDialog;
+    private Boolean isConfigured;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -64,24 +65,24 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                     protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                         Log.i("facebook - profile", currentProfile.getFirstName());
                         //       Log.i("facebook - profile email", currentProfile.)
-                        SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName"
-                                , currentProfile.getFirstName());
+                        SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName",
+                                currentProfile.getFirstName());
                         profileTracker.stopTracking();
                     }
                 };
             } else {
                 Profile profile = Profile.getCurrentProfile();
                 Log.i("facebook - profile", profile.getFirstName());
-                SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName"
-                        , profile.getFirstName());
+                SharedPreferenceUtils.getInstance(getActivity()).setValue("FacebookUserName",
+                        profile.getFirstName());
             }
-            // AccessToken accessToken = loginResult.getAccessToken().getToken();
+            // AccessTokenccessToken = loginResult.getAccessToken().getToken();
             //Log.i(LOG_TAG, "accessToken, " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             Log.i(LOG_TAG, "profile on success, " + profile);
             // nextActivity(profile);
             Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
-            openHomeActivity();
+            signInSuccessfull();
         }
 
         @Override
@@ -228,7 +229,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             // and the GoogleSignInResult will be available instantly.
             Log.d(LOG_TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
+         //   handleSignInResult(result);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -239,7 +240,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                 @Override
                 public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
                     // hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
+                  //  handleSignInResult(googleSignInResult);
                 }
             });
         }
@@ -285,14 +286,29 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
             Log.d(LOG_TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
-
-            openHomeActivity();
+            signInSuccessfull();
         }
     }
 
     public void openHomeActivity() {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void openDashBoardActivity() {
+        Intent intent = new Intent(getActivity(), DashboardActivity.class);
+        startActivity(intent);
+    }
+
+    public void signInSuccessfull() {
+        SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
+        isConfigured = SharedPreferenceUtils.getInstance(getActivity()).getBooleanValue("config", false);
+        Log.i(LOG_TAG, "isConfigured, " + isConfigured);
+        if (isConfigured) {
+            openDashBoardActivity();
+        } else if (!isConfigured) {
+            openHomeActivity();
+        }
     }
 
     @OnClick(R.id.google_sign_in_button)
@@ -323,7 +339,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             SharedPreferenceUtils.getInstance(getActivity()).setValue("UserName", userName);
             SharedPreferenceUtils.getInstance(getActivity()).setValue("Password", password);
             SharedPreferenceUtils.getInstance(getActivity()).setValue("Email", email);
-            openHomeActivity();
+            signInSuccessfull();
         } else {
             Toast.makeText(getActivity(), "Please enter correct details", Toast.LENGTH_SHORT).show();
         }
@@ -371,6 +387,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Log.i(LOG_TAG, "result from google signin, " + result);
             handleSignInResult(result);
         }
     }

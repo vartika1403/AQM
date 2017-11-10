@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:text="Which day report you want to download?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CalendarView
+        android:id="@+id/calender_view"
+        android:layout_below="@id/dialog_title"
+        android:layout_marginTop="20dp"
+        android:background="@color/arrowColor"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"></CalendarView>
+</RelativeLayout>

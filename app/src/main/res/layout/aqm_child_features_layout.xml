@@ -29,7 +29,6 @@
         android:id="@+id/aqm_feature_image"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:padding="10dp"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:layout_below="@id/view"
@@ -40,9 +39,8 @@
         android:id="@+id/aqm_feature_text"
         android:layout_width="wrap_content"
         android:visibility="invisible"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_below="@id/view"
-        android:padding="10dp"
         android:textStyle="bold"
         android:textSize="18sp"
         android:gravity="center_vertical"
@@ -63,17 +61,17 @@
 
     <TextView
         android:id="@+id/quality_text"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_below="@id/view"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:text="hi there"
         android:textStyle="bold"
         android:layout_toLeftOf="@id/percentage_text"
         android:layout_toStartOf="@id/percentage_text"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp" />
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="10dp" />
 
 </RelativeLayout>

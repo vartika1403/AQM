@@ -126,11 +126,14 @@ public class SplashActivity extends AppCompatActivity {
         Boolean isConfigured = SharedPreferenceUtils.getInstance(this)
                 .getBooleanValue("config", false);
         Log.i(LOG_TAG, "configured, " + isConfigured);
-        if (googleUserName != null && !googleUserName.isEmpty() && isConfigured) {
+        Boolean isLoggedIn = SharedPreferenceUtils.getInstance(this)
+                .getBooleanValue("isLoggedIn", false);
+        Log.i(LOG_TAG, "isLoggedIn, " + isLoggedIn);
+        if (googleUserName != null && !googleUserName.isEmpty() && isConfigured && isLoggedIn) {
             Intent intent = new Intent(this, DashboardActivity.class);
             startActivity(intent);
             return;
-        } else if (googleUserName != null && !googleUserName.isEmpty() && !isConfigured) {
+        } else if (googleUserName != null && !googleUserName.isEmpty() && !isConfigured && isLoggedIn) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return;
@@ -139,11 +142,11 @@ public class SplashActivity extends AppCompatActivity {
         String fbUserName = SharedPreferenceUtils.getInstance(this)
                 .getStringValue("FacebookUserName", "");
         Log.i(LOG_TAG, "fb user name, " + fbUserName);
-        if (fbUserName != null && !fbUserName.isEmpty() && isConfigured) {
+        if (fbUserName != null && !fbUserName.isEmpty() && isConfigured && isLoggedIn) {
             Intent intent = new Intent(this, DashboardActivity.class);
             startActivity(intent);
             return;
-        } else if (fbUserName != null && !fbUserName.isEmpty() && !isConfigured) {
+        } else if (fbUserName != null && !fbUserName.isEmpty() && !isConfigured && isLoggedIn) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             return;

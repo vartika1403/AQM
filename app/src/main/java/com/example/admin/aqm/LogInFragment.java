@@ -55,8 +55,8 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView =  inflater.inflate(R.layout.fragment_log_in, container, false);
-        ButterKnife.bind(this,fragmentView);
+        View fragmentView = inflater.inflate(R.layout.fragment_log_in, container, false);
+        ButterKnife.bind(this, fragmentView);
         return fragmentView;
     }
 
@@ -90,18 +90,30 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         String userName = SharedPreferenceUtils.getInstance(getActivity())
                 .getStringValue("GoogleUserName", "");
         Log.i(LOG_TAG, "Log in google userName, " + userName);
-        if (userName != null && !userName.isEmpty()) {
+        Boolean isConfigured = SharedPreferenceUtils.getInstance(getActivity())
+                .getBooleanValue("config", false);
+        Log.i(LOG_TAG, "isConfigured, " + isConfigured);
+        if (userName != null && !userName.isEmpty() && !isConfigured) {
             Log.i(LOG_TAG, "GoogleUserName, " + userName);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
             openHomeActivity();
+        } else if (userName != null && !userName.isEmpty() && isConfigured) {
+            Log.i(LOG_TAG, "GoogleUserName, " + userName);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
+            openDashBoardActivity();
         } else {
-                Toast.makeText(getActivity(), "First Sign In as New User", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "First Sign In as New User", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void openHomeActivity() {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
-        return;
+    }
+
+    public void openDashBoardActivity() {
+        Intent intent = new Intent(getActivity(), DashboardActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.facebook_log_in_button)
@@ -109,9 +121,17 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         String userName = SharedPreferenceUtils.getInstance(getActivity())
                 .getStringValue("FacebookUserName", "");
         Log.i(LOG_TAG, "Log in fb userName, " + userName);
-        if (userName != null && !userName.isEmpty()) {
+        Boolean isConfigured = SharedPreferenceUtils.getInstance(getActivity())
+                .getBooleanValue("config", false);
+        Log.i(LOG_TAG, "isConfigured, " + isConfigured);
+        if (userName != null && !userName.isEmpty() && !isConfigured) {
             Log.i(LOG_TAG, "FbUserName, " + userName);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
             openHomeActivity();
+        } else if (userName != null && !userName.isEmpty() && isConfigured) {
+            Log.i(LOG_TAG, "GoogleUserName, " + userName);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
+            openDashBoardActivity();
         } else {
             Toast.makeText(getActivity(), "First Sign In as New User", Toast.LENGTH_SHORT).show();
         }
@@ -119,9 +139,18 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
 
     @OnClick(R.id.log_in_button)
     public void openDashBoardScreen() {
+        Boolean isConfigured = SharedPreferenceUtils.getInstance(getActivity())
+                .getBooleanValue("config", false);
+        Log.i(LOG_TAG, "isConfigured, " + isConfigured);
+
         if (!editTextLogInEmail.getText().toString().isEmpty() &&
-                !editTextLogInPassword.getText().toString().isEmpty()) {
+                !editTextLogInPassword.getText().toString().isEmpty() && !isConfigured) {
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
             openHomeActivity();
+        } else if (!editTextLogInEmail.getText().toString().isEmpty() &&
+                !editTextLogInPassword.getText().toString().isEmpty() && isConfigured) {
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
+            openDashBoardActivity();
         } else {
             Toast.makeText(getActivity(), "Please enter correct details", Toast.LENGTH_SHORT).show();
         }

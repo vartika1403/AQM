@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
         Log.i(LOG_TAG, "onCreate of signInActivity");
-        openActivity();
+      //  openActivity();
     }
 
     public void openActivity() {
@@ -53,20 +53,22 @@ public class SignInActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
         }
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume of signInActivity");
+        logInButton.setVisibility(View.VISIBLE);
+        signInButton.setVisibility(View.VISIBLE);
         //openActivity();
     }
 
     @Override
     protected void onPause() {
         Log.i(LOG_TAG, "onPause of signInActivity");
+        logInButton.setVisibility(View.INVISIBLE);
+        signInButton.setVisibility(View.INVISIBLE);
         super.onPause();
     }
 
