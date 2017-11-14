@@ -11,18 +11,21 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
@@ -41,7 +44,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
 
 import org.json.JSONException;
@@ -72,7 +74,6 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-
 public class DashboardActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback {
     private static final String LOG_TAG = DashboardActivity.class.getSimpleName();
@@ -86,7 +87,6 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     private GoogleApiClient googleApiClient;
     private Bitmap bitmapToSave;
     private Bitmap image;
-    private DriveId driveId;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -123,13 +123,15 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             }
 
             @Override
-            public void onResponse(Call call, @NonNull final Response response) throws IOException {
+            public void onResponse(@NonNull Call call,
+                                   @NonNull final Response response) throws IOException {
                 Log.i(LOG_TAG, "the response, " + response);
                 if (response.isSuccessful()) {
                     final String responseData = response.body().string();
                     Log.i(LOG_TAG, "response data, " + responseData);
                     //show output on main thread
                     DashboardActivity.this.runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void run() {
                             progressBar.setVisibility(View.INVISIBLE);
@@ -151,6 +153,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addData(JSONObject payloadObject) throws JSONException {
         int image1 = R.drawable.ic_humidity;
         String humidity = (Integer) payloadObject.get("HUM") + "%";
@@ -192,42 +195,41 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         LinearLayout aqmFeatureLayout = (LinearLayout) findViewById(R.id.aqm_features);
         for (AQMFeature aqmFeature : featureList) {
             View aqmChildFeatureLayout = getLayoutInflater().inflate(R.layout.aqm_child_features_layout, null);
-            ImageView imageView = (ImageView) aqmChildFeatureLayout.findViewById(R.id.aqm_feature_image);
-            TextView textImage = (TextView) aqmChildFeatureLayout.findViewById(R.id.aqm_feature_text);
+            TextView aqmImage = (TextView) aqmChildFeatureLayout.findViewById(R.id.aqm_image);
+            TextView aqmFeatureText = (TextView) aqmChildFeatureLayout.findViewById(R.id.aqm_text);
+            TextView aqmPercentageText = (TextView) aqmChildFeatureLayout.findViewById(R.id.aqm_percentage);
+
             if (aqmFeature.getImage() instanceof String) {
                 if (aqmFeature.getImage().equals("CO2")) {
                     String co2TextValue = getResources().getString(R.string.co2_value);
                     Log.i(LOG_TAG, "co2TextValue, " + co2TextValue);
-                    textImage.setVisibility(View.VISIBLE);
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        textImage.setText(Html.fromHtml("CO<sub>2</sub>", Html.FROM_HTML_MODE_LEGACY));
+                        aqmImage.setText(Html.fromHtml("CO<sub>2</sub>", Html.FROM_HTML_MODE_LEGACY));
                     } else {
-                        textImage.setText(Html.fromHtml("CO<sub>2</sub>"));
+                        aqmImage.setText(Html.fromHtml("CO<sub>2</sub>"));
                     }
 
                 } else {
-                    textImage.setVisibility(View.VISIBLE);
-                    textImage.setText(aqmFeature.getImage().toString());
+                    aqmImage.setText(aqmFeature.getImage().toString());
                 }
             } else {
-                imageView.setImageResource((Integer) aqmFeature.getImage());
+                //imageView.setImageResource((Integer) aqmFeature.getImage());
+                aqmImage.setBackground(getResources().getDrawable((Integer) aqmFeature.getImage()));
             }
 
-            TextView qualityText = (TextView) aqmChildFeatureLayout.findViewById(R.id.quality_text);
-            qualityText.setText(aqmFeature.getQuality());
+            aqmFeatureText.setText(aqmFeature.getQuality());
             if (aqmFeature.getQuality().equals("GREAT")) {
-                qualityText.setTextColor(Color.parseColor("#83c326"));
+                aqmFeatureText.setTextColor(Color.parseColor("#83c326"));
             }
 
             if (aqmFeature.getQuality().equals("UNHEALTHY")) {
-                qualityText.setTextColor(Color.parseColor("#f80000"));
+                aqmFeatureText.setTextColor(Color.parseColor("#f80000"));
             }
 
             if (aqmFeature.getQuality().equals("MODERATE")) {
-                qualityText.setTextColor(Color.parseColor("#fff500"));
+                aqmFeatureText.setTextColor(Color.parseColor("#fff500"));
             }
-            TextView percentageText = (TextView) aqmChildFeatureLayout.findViewById(R.id.percentage_text);
-            percentageText.setText(aqmFeature.getPercentage());
+            aqmPercentageText.setText(aqmFeature.getPercentage());
             aqmFeatureLayout.addView(aqmChildFeatureLayout);
         }
     }
@@ -365,12 +367,6 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             Log.d(LOG_TAG, "CODE_WRITE_SETTINGS_PERMISSION success");
             //do your code
         }
-/*
-        if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == RESULT_OK) {
-            googleApiClient.connect();
-            Log.d(LOG_TAG, "Request code resolution success");
-        }
-*/
 
         switch (requestCode) {
             case REQUEST_CODE_CAPTURE_IMAGE:
@@ -560,23 +556,25 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-               /* Toast.makeText(
-                        DashboardActivity.this,
-                        "You Clicked : " + item.getTitle(),
-                        Toast.LENGTH_SHORT
-                ).show();*/
                 if (item.getTitle().toString().equals("Reports")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
                     showCalender();
                 } else if (item.getTitle().toString().equals("Log Out")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
                     logOut();
+                } else if (item.getTitle().toString().equals("Add a new device")) {
+                    configureNewDevice();
                 }
                 return true;
             }
         });
 
         popup.show(); //showing popup menu
+    }
+
+    private void configureNewDevice() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private void logOut() {
@@ -590,15 +588,9 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
     private void showCalender() {
         final Dialog dialog = new Dialog(DashboardActivity.this);
         // Include dialog.xml file
-        View view = (RelativeLayout)getLayoutInflater().inflate(R.layout.calendar_dialog,null);
+        View view = (RelativeLayout) getLayoutInflater().inflate(R.layout.calendar_dialog, null);
         dialog.setContentView(view);
-        // Set dialog title
-        //dialog.setTitle("Which day report you want to download?");
-
-        // set values for custom dialog components - text, image and button
-
-
-        CalendarView calendarView = (CalendarView)view.findViewById(R.id.calender_view);
+        CalendarView calendarView = (CalendarView) view.findViewById(R.id.calender_view);
         //Initialize calendar with date
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
 
@@ -606,29 +598,42 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
         dialog.show();
 
-        //Show/hide overflow days of a month
-     //   calendarView.setShowOverflowDate(false);
-
-        //call refreshCalendar to update calendar the view
-       // calendarView.refreshCalendar(currentCalendar);
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-        //show tVhe selected date as a toast
+            //show tVhe selected date as a toast
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 Log.i(LOG_TAG, "date is selected");
                 Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-                 downloadDataInFileManager();
-                 dialog.dismiss();
+                downloadDataInFileManager();
+                dialog.dismiss();
             }
         });
-
     }
 
     @Override
     public void onBackPressed() {
-          finish();
-          super.onBackPressed();
+        Log.i(LOG_TAG, "back pressed dashboard");
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
+                    + getFragmentManager().getBackStackEntryCount());
+            finish();
+        } else {
+            Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
+                    + getFragmentManager().getBackStackEntryCount());
+
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Log.i(LOG_TAG, "back pressed dashboard keys");
+            Intent intent = new Intent(this, SplashActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
 

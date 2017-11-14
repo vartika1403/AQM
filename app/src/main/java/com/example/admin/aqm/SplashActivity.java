@@ -30,7 +30,6 @@ public class SplashActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapter;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +173,12 @@ public class SplashActivity extends AppCompatActivity {
     @Override()
     public void onBackPressed() {
         finish();
-        super.onBackPressed();
+       // super.onBackPressed();
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Log.i(LOG_TAG, "onNewIntent is called from Dash");
+        super.onNewIntent(intent);
     }
 }

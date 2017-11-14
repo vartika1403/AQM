@@ -88,6 +88,7 @@ public class ConnectToRouterFragment extends Fragment {
             Log.i(LOG_TAG, "not connected");
             successfullyConnectedText.setText("not connected");
             tickMarkImage.setVisibility(View.INVISIBLE);
+            SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
         }
     }
 
