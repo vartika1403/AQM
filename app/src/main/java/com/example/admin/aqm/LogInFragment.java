@@ -31,9 +31,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 
 import java.util.Arrays;
 
@@ -152,8 +154,9 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
         Log.i(LOG_TAG, "onCreateView of LogInFragment");
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+                 .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                 .requestEmail()
+                 .build();
         googleApiClient = new GoogleApiClient.Builder(getActivity())
                 //.enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
