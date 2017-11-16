@@ -73,8 +73,7 @@ public class HomeActivity extends AppCompatActivity
                     PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         }
 
-        boolean permission;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             permission = Settings.System.canWrite(this);
         } else {
             permission = ContextCompat.checkSelfPermission(this,
@@ -83,14 +82,16 @@ public class HomeActivity extends AppCompatActivity
         if (!permission) {
             //do your code
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+*//*
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + this.getPackageName()));
                 startActivityForResult(intent, CODE_WRITE_SETTINGS_PERMISSION);
+*//*
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_SETTINGS}, CODE_WRITE_SETTINGS_PERMISSION);
             }
-        }
+        }*/
     //    getSupportActionBar().hide();
 
          //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -143,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

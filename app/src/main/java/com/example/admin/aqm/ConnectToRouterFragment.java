@@ -78,6 +78,7 @@ public class ConnectToRouterFragment extends Fragment {
         Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
 
         if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            successfullyConnectedText.setVisibility(View.VISIBLE);
             successfullyConnectedText.setText("successfully connected");
             tickMarkImage.setVisibility(View.VISIBLE);
             Log.i(LOG_TAG, "connected");
@@ -86,6 +87,7 @@ public class ConnectToRouterFragment extends Fragment {
             handler.postDelayed(r, 3000);
         } else {
             Log.i(LOG_TAG, "not connected");
+            successfullyConnectedText.setVisibility(View.VISIBLE);
             successfullyConnectedText.setText("not connected");
             tickMarkImage.setVisibility(View.INVISIBLE);
             SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
@@ -95,6 +97,8 @@ public class ConnectToRouterFragment extends Fragment {
     final Runnable r = new Runnable() {
         public void run() {
             if (getActivity() != null) {
+                successfullyConnectedText.setVisibility(View.INVISIBLE);
+                tickMarkImage.setVisibility(View.INVISIBLE);
                 ((HomeActivity) getActivity()).openDashBoardActivity();
             }
         }
