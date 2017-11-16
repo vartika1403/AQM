@@ -120,6 +120,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(LOG_TAG, "onCreate of LogInFragment");
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         tracker = new AccessTokenTracker() {
@@ -148,6 +149,8 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_log_in, container, false);
         ButterKnife.bind(this, fragmentView);
+        Log.i(LOG_TAG, "onCreateView of LogInFragment");
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -162,6 +165,13 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.i(LOG_TAG, "onAttach of LogInFragment");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i(LOG_TAG, "onActivityCreated of LogInFragment");
     }
 
     @Override
@@ -177,6 +187,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(LOG_TAG, "onStart of LogInFragment");
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -222,7 +233,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
         Log.i(LOG_TAG, "onPause of LogInFragment");
         SignInActivity activity = (SignInActivity) getActivity();
         if (activity != null) {
-            activity.showButton();
+            activity.hideButton();
         }
         super.onPause();
     }
@@ -366,10 +377,22 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onStop() {
-        Log.i(LOG_TAG, "onStop of SignInFragmnet");
+        Log.i(LOG_TAG, "onStop of LogInFragment");
         tracker.stopTracking();
         profileTracker.stopTracking();
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(LOG_TAG, "onDestroyView of LogInFragment");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(LOG_TAG, "onDestroy of LogInFragment");
+        super.onDestroy();
     }
 
     @Override

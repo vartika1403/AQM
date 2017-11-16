@@ -573,6 +573,7 @@ public class DashboardActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
+/*
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Drive.API).addScope(Drive.SCOPE_FILE)
@@ -583,6 +584,7 @@ public class DashboardActivity extends AppCompatActivity implements
             Log.i(LOG_TAG, "googleApiClient, " + googleApiClient);
         }
         googleApiClient.connect();
+*/
     }
 
     @Override
