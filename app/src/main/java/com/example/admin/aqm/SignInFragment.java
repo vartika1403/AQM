@@ -54,7 +54,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     private GoogleApiClient googleApiClient;
     private CallbackManager callbackManager;
     private ProgressDialog progressDialog;
-    private Boolean isConfigured;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -229,7 +228,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             // and the GoogleSignInResult will be available instantly.
             Log.d(LOG_TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
-         //   handleSignInResult(result);
+            //   handleSignInResult(result);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -240,7 +239,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                 @Override
                 public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
                     // hideProgressDialog();
-                  //  handleSignInResult(googleSignInResult);
+                    //  handleSignInResult(googleSignInResult);
                 }
             });
         }
@@ -286,6 +285,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
             Log.d(LOG_TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
+            showProgressDialog();
             signInSuccessfull();
         }
     }
@@ -302,8 +302,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
     public void signInSuccessfull() {
         SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
-        isConfigured = SharedPreferenceUtils.getInstance(getActivity()).getBooleanValue("config", false);
+        Boolean isConfigured = SharedPreferenceUtils.getInstance(getActivity()).getBooleanValue("config", false);
         Log.i(LOG_TAG, "isConfigured, " + isConfigured);
+        hideProgressDialog();
         if (isConfigured) {
             openDashBoardActivity();
         } else if (!isConfigured) {
@@ -376,7 +377,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.i(LOG_TAG, "connection failed, " + connectionResult);
+        Toast.makeText(getActivity(), "Sorry connection failed", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -390,10 +392,5 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
             Log.i(LOG_TAG, "result from google signin, " + result);
             handleSignInResult(result);
         }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

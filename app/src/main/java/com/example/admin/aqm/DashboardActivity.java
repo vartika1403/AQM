@@ -197,7 +197,9 @@ public class DashboardActivity extends AppCompatActivity implements
         featureList.add(aqmFeature10);
 
         if(isDoneClicked) {
-            downloadDataInFileManager();
+            File historyDataFile = getHistoryDataFile();
+            Log.i(LOG_TAG, "the file, " + historyDataFile);
+            downloadDataInFileManager(historyDataFile);
             return;
         }
 
@@ -243,6 +245,24 @@ public class DashboardActivity extends AppCompatActivity implements
         }
     }
 
+    private File getHistoryDataFile() {
+        String fileNameXls = "air_quality_history_data" + ".xls";
+        File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Log.i(LOG_TAG, "sdCard, " + sdCard);
+        File directory = new File(sdCard.getAbsolutePath() + "/HistoryData");
+        Log.i(LOG_TAG, "directory, " + directory);
+        boolean isPresent = directory.mkdirs();
+        if (!isPresent) {
+            Log.i(LOG_TAG, "isPresent is false, " + directory);
+            return null;
+        }
+
+        File file = new File(directory, fileNameXls);
+        Log.i(LOG_TAG, "the file, " + file);
+
+        return file;
+    }
+
     @OnClick(R.id.download_image)
     public void downloadData() {
         openDialog();
@@ -254,12 +274,16 @@ public class DashboardActivity extends AppCompatActivity implements
                 .setItems(R.array.dowload_option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0) {
+                       /* if (i == 0) {
                             Log.i(LOG_TAG, "item google drive clicked, " + i);
                             //  downloadDataViaGoogleDrive();
-                        } else if (i == 1) {
+                        } else */
+                            if (i == 0) {
                             Log.i(LOG_TAG, "item local storage clicked, " + i);
-                            downloadDataInFileManager();
+                            File todayDataFile = getTodayDataFile();
+                            if (todayDataFile != null) {
+                                downloadDataInFileManager(todayDataFile);
+                            }
                         }
                     }
                 });
@@ -267,8 +291,25 @@ public class DashboardActivity extends AppCompatActivity implements
         alert.show();
     }
 
-    private void downloadDataInFileManager() {
-        String fileNameXls = "air_quality_data" + ".xls";
+    private File getTodayDataFile() {
+        String fileNameXls = "air_quality_today_data" + ".xls";
+        File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Log.i(LOG_TAG, "sdCard, " + sdCard);
+        File directory = new File(sdCard.getAbsolutePath() + "/TodayData");
+        Log.i(LOG_TAG, "directory, " + directory);
+        boolean isPresent = directory.mkdirs();
+        if (!isPresent) {
+            Log.i(LOG_TAG, "isPresent is false, " + directory);
+            return null;
+        }
+        // make a excel file
+        File file = new File(directory, fileNameXls);
+        Log.i(LOG_TAG, "the file, " + file);
+        return file;
+    }
+
+    private void downloadDataInFileManager(File file) {
+     /*   String fileNameXls = "air_quality_data" + ".xls";
         File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         Log.i(LOG_TAG, "sdCard, " + sdCard);
         File directory = new File(sdCard.getAbsolutePath() + "/new");
@@ -280,7 +321,8 @@ public class DashboardActivity extends AppCompatActivity implements
         }
         // make a excel file
         File file = new File(directory, fileNameXls);
-        Log.i(LOG_TAG, "the file, " + file);
+        Log.i(LOG_TAG, "the file, " + file);*/
+
         WorkbookSettings workbookSettings = new WorkbookSettings();
         workbookSettings.setLocale(new Locale("en", "EN"));
         WritableWorkbook workbook;
