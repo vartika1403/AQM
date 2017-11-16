@@ -33,5 +33,6 @@
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="air_quality_text">INDOOR \n AIR QUALITY INDEX</string>
     <string name="co2_value">CO<sub>2</sub></string>
+    <string name="done_button">DONE</string>
 </resources>
 

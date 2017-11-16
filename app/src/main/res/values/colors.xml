@@ -8,9 +8,10 @@
     <color name="colorSkyBlue">#5fb6d9</color>
     <color name="colorBlue">#336699</color>
     <color name="colorGreen">#83c326</color>
-    <color name="colorYellow">#fff500</color>
+    <color name="colorYellow">#f1df17</color>
     <color name="colorOrange">#f87800</color>
     <color name="colorRed">#f80000</color>
     <color name="colorMaroon">#980048</color>
     <color name="arrowColor">#999999</color>
+    <color name="dashboardBackground">#f8f8f8</color>
 </resources>

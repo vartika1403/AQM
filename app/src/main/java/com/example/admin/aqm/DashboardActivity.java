@@ -74,8 +74,10 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-public class DashboardActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, ResultCallback {
+public class DashboardActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        ResultCallback, DateRangePickerFragment.OnDateRangeSelectedListener {
     private static final String LOG_TAG = DashboardActivity.class.getSimpleName();
     private static final String URL = "https://awonmn7coi.execute-api.ap-southeast-1.amazonaws.com" +
             "/prod/getlivedatabyid?deviceId=AQMDevice03";
@@ -227,7 +229,7 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             }
 
             if (aqmFeature.getQuality().equals("MODERATE")) {
-                aqmFeatureText.setTextColor(Color.parseColor("#fff500"));
+                aqmFeatureText.setTextColor(Color.parseColor("#f1df17"));
             }
             aqmPercentageText.setText(aqmFeature.getPercentage());
             aqmFeatureLayout.addView(aqmChildFeatureLayout);
@@ -558,7 +560,9 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getTitle().toString().equals("Reports")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
-                    showCalender();
+                    DateRangePickerFragment dateRangePickerFragment= DateRangePickerFragment
+                            .newInstance(DashboardActivity.this,false);
+                    dateRangePickerFragment.show(getFragmentManager(),"datePicker");
                 } else if (item.getTitle().toString().equals("Log Out")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
                     logOut();
@@ -585,38 +589,12 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
         finish();
     }
 
-    private void showCalender() {
-        final Dialog dialog = new Dialog(DashboardActivity.this);
-        // Include dialog.xml file
-        View view = (RelativeLayout) getLayoutInflater().inflate(R.layout.calendar_dialog, null);
-        dialog.setContentView(view);
-        CalendarView calendarView = (CalendarView) view.findViewById(R.id.calender_view);
-        //Initialize calendar with date
-        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
-
-        //Show monday as first date of week
-        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
-        dialog.show();
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            //show tVhe selected date as a toast
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                Log.i(LOG_TAG, "date is selected");
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-                downloadDataInFileManager();
-                dialog.dismiss();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         Log.i(LOG_TAG, "back pressed dashboard");
         if (getFragmentManager().getBackStackEntryCount() > 1) {
             Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
                     + getFragmentManager().getBackStackEntryCount());
-            finish();
         } else {
             Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
                     + getFragmentManager().getBackStackEntryCount());
@@ -634,6 +612,13 @@ public class DashboardActivity extends AppCompatActivity implements GoogleApiCli
             startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onDateRangeSelected(int startDay, int startMonth, int startYear, int endDay,
+                                    int endMonth, int endYear) {
+        Log.d("range : ", "from: " + startDay + "-" + startMonth + "-" + startYear +
+                " to : " + endDay + "-" + endMonth + "-" + endYear);
     }
 }
 

@@ -34,5 +34,15 @@
 -->
     </style>
 
+    <style name="yourCustomStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorSkyBlue</item>
+        <item name="android:textColorPrimaryInverse">@color/colorWhite</item>
+        .. other
+    </style>
+
+    <style name="tabStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        .. other
+    </style>
 
 </resources>
