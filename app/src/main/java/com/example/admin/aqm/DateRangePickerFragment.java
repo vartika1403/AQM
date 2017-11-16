@@ -19,6 +19,7 @@ public class DateRangePickerFragment extends DialogFragment implements View.OnCl
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     boolean is24HourMode;
+    boolean isDoneClicked;
 
     public DateRangePickerFragment() {
         // Required empty public constructor
@@ -85,14 +86,15 @@ public class DateRangePickerFragment extends DialogFragment implements View.OnCl
 
     @Override
     public void onClick(View view) {
+        isDoneClicked = true;
         dismiss();
         onDateRangeSelectedListener.onDateRangeSelected(startDatePicker.getDayOfMonth(),
                 startDatePicker.getMonth(), startDatePicker.getYear(),
-                endDatePicker.getDayOfMonth(), endDatePicker.getMonth(), endDatePicker.getYear());
+                endDatePicker.getDayOfMonth(), endDatePicker.getMonth(), endDatePicker.getYear(), isDoneClicked);
     }
 
     public interface OnDateRangeSelectedListener {
         void onDateRangeSelected(int startDay, int startMonth, int startYear, int endDay,
-                                 int endMonth, int endYear);
+                                 int endMonth, int endYear, boolean isDoneClicked);
     }
 }

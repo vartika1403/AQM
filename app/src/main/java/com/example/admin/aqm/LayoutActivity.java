@@ -11,8 +11,9 @@ public class LayoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.fragment_connect_to_router);
         LinearLayout aqmFeatureLayout = (LinearLayout) findViewById(R.id.aqm_features);
+/*
         for (int i = 0; i < 10; i++) {
             View view  = getLayoutInflater().inflate(R.layout.aqm_feature, null);
             TextView aqmText = (TextView)view.findViewById(R.id.aqm_text);
@@ -23,5 +24,6 @@ public class LayoutActivity extends AppCompatActivity {
             }
             aqmFeatureLayout.addView(view);
         }
+*/
     }
 }

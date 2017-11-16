@@ -89,6 +89,7 @@ public class DashboardActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private Bitmap bitmapToSave;
     private Bitmap image;
+    private boolean isDoneClicked;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -155,6 +156,7 @@ public class DashboardActivity extends AppCompatActivity implements
         });
     }
 
+    //for now, to be changed after real data comes
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addData(JSONObject payloadObject) throws JSONException {
         int image1 = R.drawable.ic_humidity;
@@ -193,6 +195,11 @@ public class DashboardActivity extends AppCompatActivity implements
         String image9 = "VOC";
         AQMFeature aqmFeature10 = new AQMFeature(image9, "GREAT", vocValue);
         featureList.add(aqmFeature10);
+
+        if(isDoneClicked) {
+            downloadDataInFileManager();
+            return;
+        }
 
         LinearLayout aqmFeatureLayout = (LinearLayout) findViewById(R.id.aqm_features);
         for (AQMFeature aqmFeature : featureList) {
@@ -616,9 +623,11 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public void onDateRangeSelected(int startDay, int startMonth, int startYear, int endDay,
-                                    int endMonth, int endYear) {
+                                    int endMonth, int endYear, boolean isDoneClicked) {
         Log.d("range : ", "from: " + startDay + "-" + startMonth + "-" + startYear +
                 " to : " + endDay + "-" + endMonth + "-" + endYear);
+        this.isDoneClicked = isDoneClicked;
+        getDataFromServer();
     }
 }
 

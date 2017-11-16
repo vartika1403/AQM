@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/successfully_connected_text"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/colorNavyBlue"
+        android:textColor="@color/colorBlue"
         android:textSize="26sp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
@@ -19,30 +19,9 @@
     <ImageView
         android:id="@+id/tick_mark_image"
         android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:src="@drawable/tick_mark_image"
         android:layout_width="200dp"
         android:layout_height="200dp" />
-
-    <EditText
-        android:id="@+id/ssid_edit_text"
-        android:hint="SSID"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/password_edit_text"
-        android:hint="Password"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content" />
-
 
 </LinearLayout>
