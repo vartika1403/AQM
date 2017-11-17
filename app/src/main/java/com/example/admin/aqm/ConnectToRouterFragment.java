@@ -23,6 +23,8 @@ public class ConnectToRouterFragment extends Fragment {
     TextView successfullyConnectedText;
     @BindView(R.id.tick_mark_image)
     ImageView tickMarkImage;
+    @BindView(R.id.not_connected_image)
+    ImageView notConnectedImage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class ConnectToRouterFragment extends Fragment {
 
         if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
             successfullyConnectedText.setVisibility(View.VISIBLE);
+            notConnectedImage.setVisibility(View.INVISIBLE);
             successfullyConnectedText.setText("successfully connected");
             tickMarkImage.setVisibility(View.VISIBLE);
             Log.i(LOG_TAG, "connected");
@@ -87,6 +90,7 @@ public class ConnectToRouterFragment extends Fragment {
             handler.postDelayed(r, 3000);
         } else {
             Log.i(LOG_TAG, "not connected");
+            notConnectedImage.setVisibility(View.VISIBLE);
             successfullyConnectedText.setVisibility(View.VISIBLE);
             successfullyConnectedText.setText("not connected");
             tickMarkImage.setVisibility(View.INVISIBLE);
@@ -97,10 +101,16 @@ public class ConnectToRouterFragment extends Fragment {
     final Runnable r = new Runnable() {
         public void run() {
             if (getActivity() != null) {
-                successfullyConnectedText.setVisibility(View.INVISIBLE);
-                tickMarkImage.setVisibility(View.INVISIBLE);
                 ((HomeActivity) getActivity()).openDashBoardActivity();
             }
         }
     };
+
+    @Override
+    public void onPause() {
+        successfullyConnectedText.setVisibility(View.INVISIBLE);
+        tickMarkImage.setVisibility(View.INVISIBLE);
+        notConnectedImage.setVisibility(View.INVISIBLE);
+        super.onPause();
+    }
 }

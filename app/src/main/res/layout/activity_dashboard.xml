@@ -127,7 +127,7 @@
 
     <ImageView
         android:id="@+id/download_image"
-        android:src="@drawable/download"
+        app:srcCompat="@drawable/ic_download"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
