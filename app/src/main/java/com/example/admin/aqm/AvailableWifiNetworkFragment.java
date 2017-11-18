@@ -222,7 +222,7 @@ public class AvailableWifiNetworkFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_available_network, container, false);
         ButterKnife.bind(this, view);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("AQM List");
+        toolbar.setTitle("Select AQM device");
         Handler hand = new Handler();
         hand.postDelayed(new Runnable() {
 

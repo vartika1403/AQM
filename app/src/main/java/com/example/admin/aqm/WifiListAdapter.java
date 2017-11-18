@@ -44,8 +44,9 @@ public class WifiListAdapter extends ArrayAdapter<String> {
         return false;
     }
 
+    @NonNull
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(int i, View convertView, @NonNull ViewGroup viewGroup) {
         View v = convertView;
 
         if (v == null) {
@@ -60,10 +61,12 @@ public class WifiListAdapter extends ArrayAdapter<String> {
             ImageView wifiIconImage = (ImageView)v.findViewById(R.id.wifi_icon_image);
 
             if(wifiNameTextView != null) {
+                wifiNameTextView.invalidate();
                 wifiNameTextView.setText(wifiItemName);
             }
 
             if (wifiIconImage != null) {
+                wifiIconImage.invalidate();
                 wifiIconImage.setImageResource(R.drawable.ic_menu_wifi);
             }
         }
