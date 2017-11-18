@@ -3,7 +3,6 @@ package com.example.admin.aqm;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -278,6 +277,30 @@ public class AvailableWifiNetworkFragment extends Fragment {
             getActivity().unregisterReceiver(aqmScanReceiver);
         }
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(LOG_TAG, "onStop is called");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(LOG_TAG, "onDestroyView is called");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(LOG_TAG, "onDestroy is called");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.i(LOG_TAG, "onDetach is called");
+       super.onDetach();
     }
 
     @Override
