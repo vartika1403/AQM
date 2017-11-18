@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "823257819710",
-    "project_id": "aqmapp"
+    "project_number": "450211608961",
+    "project_id": "deft-envoy-186416"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823257819710:android:ab0a9a3dd689603b",
+        "mobilesdk_app_id": "1:450211608961:android:ab0a9a3dd689603b",
         "android_client_info": {
           "package_name": "com.example.admin.aqm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "823257819710-cbi7ie0ioaoo0beqk7qb8n18li7i33hu.apps.googleusercontent.com",
+          "client_id": "450211608961-3ui7npacogs4l0m6n8aenihhdreamba4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.admin.aqm",
-            "certificate_hash": "178f1a6067887c25561bd723889ad0ad8ad29868"
+            "certificate_hash": "e43d6a2038744b10b5358ffbc368af1e93cc28da"
           }
         },
         {
-          "client_id": "823257819710-c2clm8drgiet05dr7c5s4evt5qfet4vh.apps.googleusercontent.com",
+          "client_id": "450211608961-da5bn73oravga8464d3jbcs0kutmb09g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBhGrdhJ3lKpqVuNn7N4vorkjsywnNl5-g"
+          "current_key": "AIzaSyDuNQEPbB6SVccgzyTI6hLzbI_lRVrC738"
         }
       ],
       "services": {
