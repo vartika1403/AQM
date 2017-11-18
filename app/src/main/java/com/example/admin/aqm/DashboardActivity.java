@@ -319,6 +319,9 @@ public class DashboardActivity extends AppCompatActivity implements
         File file = new File(directory, fileNameXls);
         Log.i(LOG_TAG, "the file, " + file);*/
 
+        if(file == null) {
+            return;
+        }
         WorkbookSettings workbookSettings = new WorkbookSettings();
         workbookSettings.setLocale(new Locale("en", "EN"));
         WritableWorkbook workbook;

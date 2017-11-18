@@ -165,6 +165,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
+        Log.i(LOG_TAG, "open signin activity");
         Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
         startActivity(intent);
       //  finish();
