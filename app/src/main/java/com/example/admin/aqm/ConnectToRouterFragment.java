@@ -50,6 +50,9 @@ public class ConnectToRouterFragment extends Fragment {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager
                 .getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return null;
+        }
 
         Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
 
