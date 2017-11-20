@@ -223,7 +223,8 @@ public class AvailableWifiNetworkFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_available_network, container, false);
         ButterKnife.bind(this, view);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("AQM List");
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setTitle("Select AQM device");
         Handler hand = new Handler();
         hand.postDelayed(new Runnable() {
 
@@ -274,11 +275,32 @@ public class AvailableWifiNetworkFragment extends Fragment {
     @Override
     public void onPause() {
         Log.i(LOG_TAG, "onPause is called");
+
         if (getActivity() != null) {
             getActivity().unregisterReceiver(aqmScanReceiver);
         }
+
         super.onPause();
     }
+
+    @Override
+    public void onStop() {
+        Log.i(LOG_TAG, "onStop is called");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(LOG_TAG, "onDestroy is called");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.i(LOG_TAG, "onDetach is called");
+        super.onDetach();
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {

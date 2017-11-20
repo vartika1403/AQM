@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/dashboardBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dashboardBackground">
 
     <ImageView
         android:id="@+id/setting_icon_image"
@@ -39,9 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/air_quality_index_text"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorGreen"
         android:layout_marginTop="5dp"
         android:text="25"
+        android:textColor="@color/colorGreen"
         android:textSize="60sp"
         android:textStyle="bold" />
 
@@ -76,17 +76,18 @@
 
     <ScrollView
         android:id="@+id/scroll_view"
-        android:clipToPadding="true"
-        android:layout_below="@id/aqm_device_name_text"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/aqm_features"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"></LinearLayout>
+        android:layout_below="@id/aqm_device_name_text"
+        android:layout_marginTop="20dp"
+        android:clipToPadding="true">
+
+        <LinearLayout
+            android:id="@+id/aqm_features"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
     <ProgressBar
@@ -98,44 +99,44 @@
 
     <ImageView
         android:id="@+id/right_arrow_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/temp_text"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignRight="@id/temp_text"
-        android:layout_alignEnd="@id/temp_text"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_below="@id/notification_icon_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_angle_arrow_pointing_to_right"/>
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/ic_angle_arrow_pointing_to_right" />
 
     <ImageView
         android:id="@+id/left_arrow_image"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignLeft="@id/temp_text"
-        android:layout_alignStart="@id/temp_text"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:rotation="180"
-        android:layout_below="@id/notification_icon_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_angle_arrow_pointing_to_right"/>
+        android:layout_alignLeft="@id/temp_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignStart="@id/temp_text"
+        android:layout_below="@id/notification_icon_image"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:rotation="180"
+        app:srcCompat="@drawable/ic_angle_arrow_pointing_to_right" />
 
     <ImageView
         android:id="@+id/download_image"
-        android:background="@drawable/background_circle"
-        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/background_circle"
+        android:padding="10dp" />
 
 </RelativeLayout>

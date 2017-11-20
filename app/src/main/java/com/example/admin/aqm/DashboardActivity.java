@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -99,6 +98,7 @@ public class DashboardActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
+        Log.i(LOG_TAG, "onCreate of DashboardActivity");
 
         if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -192,7 +192,7 @@ public class DashboardActivity extends AppCompatActivity implements
         AQMFeature aqmFeature10 = new AQMFeature(image9, "GREAT", vocValue);
         featureList.add(aqmFeature10);
 
-        if(isDoneClicked) {
+        if (isDoneClicked) {
             File historyDataFile = getHistoryDataFile();
             Log.i(LOG_TAG, "the file, " + historyDataFile);
             downloadDataInFileManager(historyDataFile);
@@ -274,7 +274,7 @@ public class DashboardActivity extends AppCompatActivity implements
                             Log.i(LOG_TAG, "item google drive clicked, " + i);
                             //  downloadDataViaGoogleDrive();
                         } else */
-                            if (i == 0) {
+                        if (i == 0) {
                             Log.i(LOG_TAG, "item local storage clicked, " + i);
                             File todayDataFile = getTodayDataFile();
                             if (todayDataFile != null) {
@@ -319,7 +319,7 @@ public class DashboardActivity extends AppCompatActivity implements
         File file = new File(directory, fileNameXls);
         Log.i(LOG_TAG, "the file, " + file);*/
 
-        if(file == null) {
+        if (file == null) {
             return;
         }
         WorkbookSettings workbookSettings = new WorkbookSettings();
@@ -610,9 +610,9 @@ public class DashboardActivity extends AppCompatActivity implements
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getTitle().toString().equals("Reports")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
-                    DateRangePickerFragment dateRangePickerFragment= DateRangePickerFragment
-                            .newInstance(DashboardActivity.this,false);
-                    dateRangePickerFragment.show(getFragmentManager(),"datePicker");
+                    DateRangePickerFragment dateRangePickerFragment = DateRangePickerFragment
+                            .newInstance(DashboardActivity.this, false);
+                    dateRangePickerFragment.show(getFragmentManager(), "datePicker");
                 } else if (item.getTitle().toString().equals("Log Out")) {
                     Log.i(LOG_TAG, "Report clicked, " + item.getTitle().toString());
                     logOut();
@@ -643,15 +643,20 @@ public class DashboardActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         Log.i(LOG_TAG, "back pressed dashboard");
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
+        Log.i(LOG_TAG, "back pressed dashboard keys");
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+/*        if (getFragmentManager().getBackStackEntryCount() > 1) {
             Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
                     + getFragmentManager().getBackStackEntryCount());
         } else {
             Log.i(LOG_TAG, "back pressed dashboard : stack entry count, "
                     + getFragmentManager().getBackStackEntryCount());
 
-            super.onBackPressed();
-        }
+         */
+        super.onBackPressed();
+
     }
 
     @Override
