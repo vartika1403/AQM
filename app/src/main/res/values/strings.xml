@@ -21,9 +21,7 @@
     <string name="log_in_text">LOG IN</string>
     <string name="loading">Loading....</string>
     <string name="you_can_also_sign_up_with">You Can Also Sign up With</string>
-    <string name="facebook_app_id">118602105499714</string>
     <string name="good_is_air_text">How good is \n your air...</string>
-    <string name="fb_login_protocol_scheme">fb118602105499714</string>
     <string name="welcome_screen1_title">HEADLINE - 1</string>
     <string name="welcome_screen1_desc">LoresInpus</string>
     <string name="welcome_screen2_title">HEADLINE - 2</string>
@@ -34,5 +32,7 @@
     <string name="air_quality_text">INDOOR \n AIR QUALITY INDEX</string>
     <string name="co2_value">CO<sub>2</sub></string>
     <string name="done_button">DONE</string>
+    <string name="facebook_app_id">2009937889280151</string>
+    <string name="fb_login_protocol_scheme">fb2009937889280151</string>
 </resources>
 

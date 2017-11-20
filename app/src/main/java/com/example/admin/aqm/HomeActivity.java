@@ -14,8 +14,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -159,7 +157,7 @@ public class HomeActivity extends AppCompatActivity
     public void openAvailableWifiNetworkFragment() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment())
-                .addToBackStack(null).commit();
+                .commit();
     }
 
     public void openAQMConnectionFragment(WifiInfo wifiInfo) {
@@ -209,28 +207,24 @@ public class HomeActivity extends AppCompatActivity
         }
 
         int count = getFragmentManager().getBackStackEntryCount();
-
-        if (count >  1) {
-            Log.i(LOG_TAG, "count, " + count);
-            getFragmentManager().popBackStack();
-            //additional code
-        } else {
-            if (count == 0) {
-                configNowButton.setVisibility(View.INVISIBLE);
-                homeImage.setVisibility(View.INVISIBLE);
-                goodAirText.setVisibility(View.INVISIBLE);
-                Log.i(LOG_TAG, "count 0, " + count);
+        if (count == 2) {
+           boolean isConf =  SharedPreferenceUtils.getInstance(this).getBooleanValue("config", false);
+            if (isConf) {
                 Intent intent = new Intent(this, SplashActivity.class);
                 startActivity(intent);
-                finish();
-            } else {
-                configNowButton.setVisibility(View.VISIBLE);
-                homeImage.setVisibility(View.VISIBLE);
-                goodAirText.setVisibility(View.VISIBLE);
-                Log.i(LOG_TAG, "count, " + count);
+                return;
             }
         }
-        super.onBackPressed();
+
+        if (count >  0) {
+            Log.i(LOG_TAG, "count, " + count);
+            getFragmentManager().popBackStackImmediate();
+            getFragmentManager().executePendingTransactions();
+            //additional code
+        } else {
+            Log.i(LOG_TAG, "count, " + count);
+            super.onBackPressed();
+        }
     }
 
     @SuppressLint("NewApi")

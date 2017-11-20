@@ -20,12 +20,9 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:textStyle="bold"
         android:text="AQM"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,8 +59,7 @@ public class WifiListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wifi_list, container, false);
         ButterKnife.bind(this, view);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar.setTitle("Configure Wifi");
+        toolbar.setTitle("Configure wifi");
         getWifiResults();
         return view;
     }
@@ -86,6 +84,7 @@ public class WifiListFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.i(LOG_TAG, "onResume of wifiList fragment");
         super.onResume();
         if (getActivity() != null) {
             getActivity().registerReceiver(wifiScanReceiver,
@@ -96,10 +95,17 @@ public class WifiListFragment extends Fragment {
 
     @Override
     public void onPause() {
+        Log.i(LOG_TAG, "onPause of wifiList fragment");
         if (getActivity() != null) {
             getActivity().unregisterReceiver(wifiScanReceiver);
         }
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(LOG_TAG, "onStop of wifiList fragment");
+        super.onStop();
     }
 
     private final BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
@@ -363,12 +369,27 @@ public class WifiListFragment extends Fragment {
         return -1;
     }
 
+
+
+    @Override
+    public void onDestroyView() {
+        Log.i(LOG_TAG, "onDestroyView of wifiList fragment");
+        super.onDestroyView();
+    }
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        Log.i(LOG_TAG, "onDestroy of wifilist fragemnt");
         if (dialog1 != null) {
             dialog1.dismiss();
             dialog1 = null;
         }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.i(LOG_TAG, "onDetach of wifilist fragemnt");
+        super.onDetach();
     }
 }

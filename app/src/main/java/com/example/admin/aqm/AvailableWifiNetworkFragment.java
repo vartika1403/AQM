@@ -3,7 +3,6 @@ package com.example.admin.aqm;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -223,7 +222,6 @@ public class AvailableWifiNetworkFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_available_network, container, false);
         ButterKnife.bind(this, view);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
         toolbar.setTitle("Select AQM device");
         Handler hand = new Handler();
         hand.postDelayed(new Runnable() {
@@ -275,11 +273,9 @@ public class AvailableWifiNetworkFragment extends Fragment {
     @Override
     public void onPause() {
         Log.i(LOG_TAG, "onPause is called");
-
         if (getActivity() != null) {
             getActivity().unregisterReceiver(aqmScanReceiver);
         }
-
         super.onPause();
     }
 
@@ -287,6 +283,12 @@ public class AvailableWifiNetworkFragment extends Fragment {
     public void onStop() {
         Log.i(LOG_TAG, "onStop is called");
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(LOG_TAG, "onDestroyView is called");
+        super.onDestroyView();
     }
 
     @Override
@@ -298,9 +300,8 @@ public class AvailableWifiNetworkFragment extends Fragment {
     @Override
     public void onDetach() {
         Log.i(LOG_TAG, "onDetach is called");
-        super.onDetach();
+       super.onDetach();
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {

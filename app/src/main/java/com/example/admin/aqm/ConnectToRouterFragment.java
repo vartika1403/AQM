@@ -113,6 +113,10 @@ public class ConnectToRouterFragment extends Fragment {
         NetworkInfo networkInfo = connectivityManager
                 .getActiveNetworkInfo();
 
+        if (networkInfo == null) {
+            return;
+        }
+
         Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
 
         if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
