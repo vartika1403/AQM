@@ -305,7 +305,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
 
             Log.d(LOG_TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
-            showProgressDialog();
+//            showProgressDialog();
+            signInSuccessfull();
+        } else {
             signInSuccessfull();
         }
     }
@@ -324,7 +326,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
         SharedPreferenceUtils.getInstance(getActivity()).setValue("isLoggedIn", true);
         Boolean isConfigured = SharedPreferenceUtils.getInstance(getActivity()).getBooleanValue("config", false);
         Log.i(LOG_TAG, "isConfigured, " + isConfigured);
-        hideProgressDialog();
+      //  hideProgressDialog();
         if (isConfigured) {
             openDashBoardActivity();
         } else if (!isConfigured) {

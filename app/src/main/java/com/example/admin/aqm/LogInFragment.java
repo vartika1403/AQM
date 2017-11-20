@@ -364,6 +364,8 @@ public class LogInFragment extends Fragment implements View.OnClickListener,
             Log.d(LOG_TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
             signInSuccessfull();
+        } else {
+            signInSuccessfull();
         }
     }
 
