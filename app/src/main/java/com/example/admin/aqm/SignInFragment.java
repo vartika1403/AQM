@@ -162,8 +162,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // LoginManager.getInstance().logInWithReadPermissions(this.getActivity(), Arrays.asList(PERMISSIONS));
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         ButterKnife.bind(this, view);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -171,53 +169,15 @@ public class SignInFragment extends Fragment implements View.OnClickListener,
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())
-                //.enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
-        // LoginManager.getInstance().setReadPermissions("user_friends");
-        //   LoginManager.getInstance().registerCallback(callbackManager, callback);
-
-/*
-        facebookSignIn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-              Log.i(LOG_TAG, "loginResult, " + loginResult.getAccessToken().getUserId());
-            }
-
-            @Override
-            public void onCancel() {
-              Log.i(LOG_TAG, "on cancelled called");
-            }
-
-
-            @Override
-            public void onError(FacebookException e) {
-                Log.e(LOG_TAG, e.getMessage());
-            }
-        });
-*/
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-
-/*
-        loginButton.setReadPermissions("user_friends");
-      //  loginButton.setFragment(this.getTargetFragment());Arrays.asList(
-                "public_profile", "email", "user_birthday", "user_friends")
-        loginButton.setReadPermissions("public_profile");
-        loginButton.setReadPermissions("email");
-        loginButton.setReadPermissions("user_birthday");
-*/
-        //      loginButton.setFragment(this);
-        //    loginButton.setReadPermissions(Arrays.asList(
-        //     "public_profile", "email", "user_birthday", "user_friends"));
-        //  loginButton.registerCallback(callbackManager,callback);
     }
 
     @Override

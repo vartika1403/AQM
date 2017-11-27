@@ -27,7 +27,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
         Log.i(LOG_TAG, "onCreate of signInActivity");
-      //  openActivity();
     }
 
     public void openActivity() {
@@ -61,7 +60,6 @@ public class SignInActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onResume of signInActivity");
         logInButton.setVisibility(View.VISIBLE);
         signInButton.setVisibility(View.VISIBLE);
-        //openActivity();
     }
 
     @Override

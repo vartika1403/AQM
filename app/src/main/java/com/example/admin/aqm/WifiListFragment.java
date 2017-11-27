@@ -127,8 +127,6 @@ public class WifiListFragment extends Fragment {
                     availableWifiSSIdList.add(scanResults.get(i).SSID);
                 }
                 wifiAdapter = new WifiListAdapter(getActivity(), R.layout.wifi_list_item, availableWifiSSIdList);
-               /* wifiListAdapter = new ArrayAdapter(getActivity(), R.layout.wifi_list_item,
-                        R.id.wifi_name_text, availableWifiSSIdList);*/
                 wifiListView.setAdapter(wifiAdapter);
                 wifiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -155,37 +153,9 @@ public class WifiListFragment extends Fragment {
                 if (!passwordEditText.getText().toString().isEmpty()) {
                     String wifiPassword = passwordEditText.getText().toString();
                     Log.i(LOG_TAG, "wifiPassword, " + wifiPassword);
-                   // ((HomeActivity) getActivity()).openConnectToRouterFragment();
                     dialog1.dismiss();
                     ((HomeActivity) getActivity()).openConnectToRouterFragment();
                     return;
-/*
-                    if (getActivity() != null) {
-                        ((HomeActivity) getActivity()).openConnectToRouterFragment();
-                    }
-*/
-/*
-                    if (getActivity() == null) {
-                        dialog1.dismiss();
-                        return;
-                    }
-*/
-/*
-                    WifiManager wm = (WifiManager) getActivity().getApplicationContext()
-                            .getSystemService(Context.WIFI_SERVICE);
-                    List<WifiConfiguration> networks = wm.getConfiguredNetworks();
-                    Log.i(LOG_TAG, "all networks, " + networks);
-                    if (networks == null) {
-                        dialog1.dismiss();
-                        return;
-                    }
-                    Iterator<WifiConfiguration> iterator = networks.iterator();
-                    Log.i(LOG_TAG, "iterator, " + iterator.hasNext());
-                    dialog1.dismiss();
-                    if (getActivity() != null) {
-                        ((HomeActivity) getActivity()).openConnectToRouterFragment();
-                    }
-*/
                 } else  {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
@@ -243,8 +213,6 @@ public class WifiListFragment extends Fragment {
         wifiConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         wifiConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
         wifiConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-      //  wifiConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.);
-       // wifiConfig.allowedProtocols.set(WifiConfiguration.Protocol.);
         int networkId = wifiManager.getConnectionInfo().getNetworkId();
         Log.i(LOG_TAG, "networkId," + networkId);
        // wifiManager.removeNetwork(networkId);
@@ -292,8 +260,6 @@ public class WifiListFragment extends Fragment {
         String netSSID = String.format("\"%s\"", networkSSID);
         Boolean state = false;
         if (wifiConfig.SSID.equals(netSSID)) {
-           // wm.saveConfiguration();
-            //wm.removeNetwork(wifiConfig.networkId);
              wm.disconnect();
             int netId = wm.addNetwork(wifiConfig);
             WifiInfo wifiInfo = wm.getConnectionInfo();
@@ -303,9 +269,6 @@ public class WifiListFragment extends Fragment {
             state = wm.enableNetwork(wifiConfig.networkId, true);
             Log.i(LOG_TAG, "state, " + state);
             Toast.makeText(getActivity(), "The connection is succesfull", Toast.LENGTH_SHORT).show();
-           // ipAddressServer = getIpAddressForServer();
-            //Log.i(LOG_TAG, "ipAddress of server, " + ipAddressServer);
-
         } else {
             wm.disableNetwork(wifiConfig.networkId);
         }
@@ -368,8 +331,6 @@ public class WifiListFragment extends Fragment {
         }
         return -1;
     }
-
-
 
     @Override
     public void onDestroyView() {

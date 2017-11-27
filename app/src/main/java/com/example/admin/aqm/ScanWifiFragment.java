@@ -1,26 +1,14 @@
 package com.example.admin.aqm;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class ScanWifiFragment extends Fragment {
     private static final String LOG_TAG = ScanWifiFragment.class.getSimpleName();
-
-/*
-    @BindView(R.id.scan_aqm_wifi_button)
-    Button scanAqmWifiButton;
-*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +24,4 @@ public class ScanWifiFragment extends Fragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
-/*
-    @OnClick(R.id.scan_aqm_wifi_button)
-    public void showAvailableWifiNetworks() {
-        ((HomeActivity)getActivity()).openAvailableWifiNetworkFragment();
-    }
-*/
 }

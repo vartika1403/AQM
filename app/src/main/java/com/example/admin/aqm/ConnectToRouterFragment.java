@@ -74,34 +74,6 @@ public class ConnectToRouterFragment extends Fragment {
             SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
         }
 
-/*
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager
-                .getActiveNetworkInfo();
-
-        Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
-
-        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            //successfullyConnectedText
-            Log.i(LOG_TAG, "connected");
-*/
-/*
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            ((HomeActivity)getActivity()).openScanWifiFrgament();
-*//*
-
-        } else {
-            Log.i(LOG_TAG, "not connected");
-            successfullyConnectedText.setText("NOT CONNECTED TO WIFI");
-        }
-*/
-
         return view;
     }
 
@@ -109,37 +81,6 @@ public class ConnectToRouterFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "onResume of ConnectToFragment");
-
-/*
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager
-                .getActiveNetworkInfo();
-
-        if (networkInfo == null) {
-            return;
-        }
-
-        Log.i(LOG_TAG, "connectivity, " + networkInfo.getType());
-
-        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            successfullyConnectedText.setVisibility(View.VISIBLE);
-            notConnectedImage.setVisibility(View.INVISIBLE);
-            successfullyConnectedText.setText("successfully connected");
-            tickMarkImage.setVisibility(View.VISIBLE);
-            Log.i(LOG_TAG, "connected");
-            SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
-            Handler handler = new Handler();
-            handler.postDelayed(r, 3000);
-        } else {
-            Log.i(LOG_TAG, "not connected");
-            notConnectedImage.setVisibility(View.VISIBLE);
-            successfullyConnectedText.setVisibility(View.VISIBLE);
-            successfullyConnectedText.setText("not connected");
-            tickMarkImage.setVisibility(View.INVISIBLE);
-            SharedPreferenceUtils.getInstance(getActivity()).setValue("config", true);
-        }
-*/
     }
 
     @Override

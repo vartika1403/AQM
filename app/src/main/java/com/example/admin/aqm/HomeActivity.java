@@ -52,11 +52,6 @@ public class HomeActivity extends AppCompatActivity
     @BindView(R.id.homeToolbar)
     AppBarLayout homeToolbar;
 
-/*
-    @BindView(R.id.scan_aqm_wifi_button)
-    Button scanAqmWifiButton;
-*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,39 +64,12 @@ public class HomeActivity extends AppCompatActivity
                     PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         }
 
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permission = Settings.System.canWrite(this);
-        } else {
-            permission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED;
-        }
-        if (!permission) {
-            //do your code
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-*//*
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, CODE_WRITE_SETTINGS_PERMISSION);
-*//*
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_SETTINGS}, CODE_WRITE_SETTINGS_PERMISSION);
-            }
-        }*/
-    //    getSupportActionBar().hide();
-
-         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       //  setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
-       // toolbar.setVisibility(View.INVISIBLE);
-
+        
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         int colorBlue = Color.parseColor("#5fb6d9");
@@ -186,16 +154,6 @@ public class HomeActivity extends AppCompatActivity
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
-
-  /*  @OnClick(R.id.scan_aqm_wifi_button)
-    public void showAvailableWifiNetworks() {
-        openAvailableWifiNetworkFragment();
-       // scanAqmWifiButton.setVisibility(View.INVISIBLE);
-*//*
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container, new AvailableWifiNetworkFragment()).commit();
-*//*
-    }*/
 
     @Override
     public void onBackPressed() {
